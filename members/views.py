@@ -313,7 +313,7 @@ def create_customer_portal(request):
 
     session = stripe.billing_portal.Session.create(
         customer = request.user.stripe_customer_id,
-        return_url = "http://127.0.0.1:8000/dashboard",
+        return_url = "http://execbjj-django.herokuapp.com/dashboard",
     )
     return redirect(session.url)
 
