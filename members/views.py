@@ -205,9 +205,19 @@ def success_view(request):
     return redirect('dashboard_page')
 
 def check_in(request):
-    
-    messages.info(request, "Check ins will open soon, keep an eye on your email inbox!")
 
+    if request.method == "POST":
+
+        subscription = Subscription.objects.filter(user=request.user)
+
+        if subscription.exists():
+        
+            messages.info(request, "Check ins will open soon, keep an eye on your email inbox!")
+            return redirect('dashboard_page')
+
+        else:
+            messages.error(request, "You must have an active subscription to check in to class")
+            return redirect('dashboard_page')
     return redirect('dashboard_page')
 
 
