@@ -216,7 +216,7 @@ def check_in(request):
             return redirect('dashboard_page')
 
         else:
-            messages.error(request, "You must have an active subscription to check in to class")
+            messages.error(request, "You must have an active membership to check in to class")
             return redirect('dashboard_page')
     return redirect('dashboard_page')
 
