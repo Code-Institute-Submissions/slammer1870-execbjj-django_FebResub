@@ -1,0 +1,8 @@
+<!--404 Page-->
+{% extends "base.html" %}{% block content %}
+<div class="h-screen w-screen flex items-center justify-center p-4">
+<div>
+<h1 class="text-4xl mb-4">404 Page Not Found</h1>
+<p class="text-xl font-light mb-4">Oops, it looks like a page doesn't exist</p>
+<a href="{{ url_for('index') }}" class="font-medium underline">Click here to go back home</a></div></div>
+{% endblock %}

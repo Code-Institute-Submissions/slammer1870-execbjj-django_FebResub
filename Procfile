@@ -1,0 +1,1 @@
+web: gunicorn execbjj.wsgi --log-file -

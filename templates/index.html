@@ -1,0 +1,729 @@
+{% extends "base.html" %} {% block content %}{% load tailwind_filters %}
+<!--Hero Image with clip-path overlay-->
+<div class="min-h-screen w-screen relative bg-black">
+  <div
+    class="
+      container
+      absolute
+      inset-0
+      py-36
+      lg:py-72
+      px-4
+      xl:px-0
+      z-10
+      mx-auto
+      flex flex-col
+      lg:flex-row
+      items-center
+      lg:items-start
+      justify-around
+    "
+  >
+    <div class="text-white w-full max-w-screen-sm pt-16">
+      <h1 class="text-4xl md:text-6xl font-semibold uppercase mb-4 pt-1">
+        ExecBJJ
+      </h1>
+      <h3 class="text-2xl md:text-4xl font-medium mb-4">
+        Learn Brazilian Jiu Jitsu with Professional Athletes
+      </h3>
+    </div>
+    <!--Lead capture form to add users to newsletter-->
+    <form
+      method="POST"
+      action="{% url 'newsletter' %}"
+      class="h-auto w-full max-w-screen-sm bg-gray-200 p-4 flex flex-col"
+    >
+      <h5 class="text-2xl font-medium mb-2">
+        Looking to learn Brazilian Jiu Jitsu?
+      </h5>
+      <p class="mb-2">
+        Add your name to the waitlist we'll notify you when there's an opening
+        to start training!
+      </p>
+      {% csrf_token %} {{newsletter_form|crispy}}
+      <div class="flex">
+        <button
+          type="submit"
+          class="bg-gray-800 text-white uppercase font-medium px-4 py-2 ml-auto"
+          value="Submit"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+  <div
+    class="
+      min-h-screen
+      w-screen
+      bg-gray-600
+      absolute
+      bg-fixed bg-fit bg-cover bg-center
+    "
+    style="
+      clip-path: polygon(0 67%, 100% 40%, 100% 100%, 0% 100%);
+      background-image: url(static/img/hero.jpg/);
+    "
+  ></div>
+</div>
+<!--Our Service Section-->
+<div class="px-4 xl:px-0 py-20 container mx-auto" id="service">
+  <div class="grid gap-4 md:grid-cols-2 md:grid-row-2 items-center">
+    <div class="pr-8 md:col-span-1 md:row-span-1">
+      <h1 class="text-3xl lg:text-4xl font-semibold uppercase mb-8 lg:mb-4">
+        What we offer
+      </h1>
+      <p class="mb-8 lg:mb-4">
+        We are a premier coaching service in the art of Brazilian Jiu Jitsu.
+        Previously our services have operated exclusively in on-site Corporate
+        Wellness but for the first time we are bringing our programme to a
+        dedicated faclilty.
+      </p>
+      <p class="mb-4 hidden md:block">
+        Our classes are designed with world class training in mind and they
+        include:
+      </p>
+    </div>
+    <img
+      src="/static/img/armbar.jpg"
+      class="mb-8 object-cover md:col-span-1 w-full md:row-span-2"
+      alt="armbar"
+    />
+    <p class="mb-8 md:hidden">
+      Our classes are designed with world class training in mind and they
+      include:
+    </p>
+    <div
+      class="
+        grid
+        gap-4
+        md:grid-cols-4 md:grid-rows-1
+        xl:grid-cols-2 xl:grid-rows-2
+        mx-auto
+        w-full
+        md:col-span-2
+        md:row-span-1
+        xl:col-span-1
+      "
+    >
+      <p class="mb-8 pb-8 pr-4 border-r-2 border-black md:col-span-1">
+        A full timetable of classes with facilities including Shower and
+        Changing Rooms.
+      </p>
+      <p class="mb-8 pb-8 pr-4 border-r-2 border-black md:col-span-1">
+        Convenient location near major public transport routes via Bus and Luas.
+      </p>
+      <p class="mb-8 pb-8 pr-4 border-r-2 border-black md:col-span-1">
+        High quality classes and training with a Brazilian Jiu Jitsu Black Belt.
+      </p>
+      <p class="mb-8 pb-8 pr-4 border-r-2 border-black md:col-span-1">
+        A fun and relaxed environment for all!
+      </p>
+    </div>
+  </div>
+</div>
+<!--Our Location Section-->
+<div class="bg-gray-200" id="location">
+  <div
+    class="
+      px-4
+      xl:px-0
+      py-20
+      container
+      mx-auto
+      flex flex-col
+      md:flex-row-reverse
+      justify-between
+    "
+  >
+    <div
+      class="lg:w-1/3 md:w-1/2 flex flex-col md:mr-auto w-full md:py-8 md:pl-8"
+    >
+      <h1 class="text-3xl font-semibold uppercase mb-8">Our Location</h1>
+      <p class="mb-8 lg:mb-4">
+        We are located in Dundrum, Co. Dublin. The Dundrum Luas stop is a 3
+        minute walk away and the area is serviced by many buses including the
+        75, 175, 17 and 44.
+      </p>
+    </div>
+    <div
+      class="
+        lg:w-2/3
+        md:w-1/2
+        bg-gray-300
+        rounded-lg
+        overflow-hidden
+        p-10
+        flex
+        items-end
+        justify-start
+        relative
+      "
+    >
+      <iframe
+        width="100%"
+        height="100%"
+        class="absolute inset-0"
+        frameborder="0"
+        title="map"
+        marginheight="0"
+        marginwidth="0"
+        scrolling="no"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2384.7586510417514!2d-6.247525483822469!3d53.293858279968134!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x486709dfc0507e6b%3A0xc463ab5e5d7f26de!2sExecBJJ%20Studio!5e0!3m2!1sen!2sie!4v1633498601169!5m2!1sen!2sie"
+        style="filter: contrast(1.2) opacity(0.4)"
+      ></iframe>
+      <div
+        class="bg-white relative flex flex-wrap py-6 rounded shadow-md w-full"
+      >
+        <div class="lg:w-1/2 px-6">
+          <h2
+            class="
+              title-font
+              font-semibold
+              text-gray-900
+              tracking-widest
+              text-xs
+            "
+          >
+            ADDRESS
+          </h2>
+          <a
+            href="https://goo.gl/maps/KLz95gTiAqkv5jvN8"
+            class="mt-1 text-blue-400 active:underline"
+          >
+            1 Victoria Terrace, Churchtown Lower, Dublin 14, D14 FA33
+          </a>
+        </div>
+        <div class="lg:w-1/2 px-6 mt-4 lg:mt-0">
+          <h2
+            class="
+              title-font
+              font-semibold
+              text-gray-900
+              tracking-widest
+              text-xs
+            "
+          >
+            EMAIL
+          </h2>
+          <a href="mailto:sam@execbjj.com" class="leading-relaxed"
+            >sam@execbjj.com</a
+          >
+          <h2
+            class="
+              title-font
+              font-semibold
+              text-gray-900
+              tracking-widest
+              text-xs
+              mt-4
+            "
+          >
+            PHONE
+          </h2>
+          <a href="tel:0851564894" class="leading-relaxed">0851564894</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Timetable Section-->
+<div id="timetable">
+  <div class="px-4 xl:px-0 pt-20 container mx-auto">
+    <h1 class="text-3xl font-semibold uppercase mb-4 md:text-center">
+      Timetable
+    </h1>
+    <div class="w-full mx-auto overflow-auto">
+      <table class="table-auto w-full text-left whitespace-no-wrap">
+        <thead>
+          <tr>
+            <th
+              class="
+                px-4
+                py-3
+                title-font
+                tracking-wider
+                font-semibold
+                text-gray-900 text-sm
+                bg-gray-100
+                rounded-tl rounded-bl
+              "
+            >
+              Time
+            </th>
+            <th
+              class="
+                px-4
+                py-3
+                title-font
+                tracking-wider
+                font-medium
+                text-gray-900 text-sm
+                bg-gray-100
+              "
+            >
+              Monday
+            </th>
+            <th
+              class="
+                px-4
+                py-3
+                title-font
+                tracking-wider
+                font-medium
+                text-gray-900 text-sm
+                bg-gray-100
+              "
+            >
+              Tuesday
+            </th>
+            <th
+              class="
+                px-4
+                py-3
+                title-font
+                tracking-wider
+                font-medium
+                text-gray-900 text-sm
+                bg-gray-100
+              "
+            >
+              Wednesday
+            </th>
+            <th
+              class="
+                px-4
+                py-3
+                title-font
+                tracking-wider
+                font-medium
+                text-gray-900 text-sm
+                bg-gray-100
+              "
+            >
+              Thursday
+            </th>
+            <th
+              class="
+                px-4
+                py-3
+                title-font
+                tracking-wider
+                font-medium
+                text-gray-900 text-sm
+                bg-gray-100
+              "
+            >
+              Friday
+            </th>
+            <th
+              class="
+                px-4
+                py-3
+                title-font
+                tracking-wider
+                font-medium
+                text-gray-900 text-sm
+                bg-gray-100
+              "
+            >
+              Saturday
+            </th>
+            <th
+              class="
+                px-4
+                py-3
+                title-font
+                tracking-wider
+                font-medium
+                text-gray-900 text-sm
+                bg-gray-100
+              "
+            >
+              Sunday
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="px-4 py-3">07:00am</td>
+            <td class="px-4 py-3 text-blue-400">Gi Class - 60 Minutes</td>
+            <td class="px-4 py-3 text-purple-400">NoGi Class - 60 Minutes</td>
+            <td class="px-4 py-3 text-blue-400">Gi Class - 60 Minutes</td>
+            <td class="px-4 py-3 text-purple-400">NoGi Class - 60 Minutes</td>
+            <td class="px-4 py-3 text-blue-400">Gi Class - 60 Minutes</td>
+            <td class="px-4 py-3 text-blue-400"></td>
+            <td class="px-4 py-3 text-blue-400"></td>
+          </tr>
+          <tr>
+            <td class="border-t-2 border-gray-200 px-4 py-3">08:00am</td>
+            <td class="border-t-2 border-gray-200 px-4 py-3 text-gray-700">
+              Optional Sparring - 30 mins
+            </td>
+            <td class="border-t-2 border-gray-200 px-4 py-3 text-gray-700">
+              Optional Sparring - 30 mins
+            </td>
+            <td class="border-t-2 border-gray-200 px-4 py-3 text-gray-700">
+              Optional Sparring - 30 mins
+            </td>
+            <td class="border-t-2 border-gray-200 px-4 py-3 text-gray-700">
+              Optional Sparring - 30 mins
+            </td>
+            <td class="border-t-2 border-gray-200 px-4 py-3 text-gray-700">
+              Optional Sparring - 30 mins
+            </td>
+            <td class="border-t-2 border-gray-200 px-4 py-3 text-gray-700"></td>
+            <td class="border-t-2 border-gray-200 px-4 py-3 text-gray-700"></td>
+          </tr>
+          <tr>
+            <td class="border-t-2 border-gray-200 px-4 py-3">10:00am</td>
+            <td class="border-t-2 border-gray-200 px-4 py-3"></td>
+            <td class="border-t-2 border-gray-200 px-4 py-3 text-purple-400">
+              NoGi Class - 60 Minutes
+            </td>
+            <td class="border-t-2 border-gray-200 px-4 py-3"></td>
+            <td class="border-t-2 border-gray-200 px-4 py-3 text-purple-400">
+              NoGi Class - 60 Minutes
+            </td>
+            <td class="border-t-2 border-gray-200 px-4 py-3"></td>
+            <td class="border-t-2 border-gray-200 px-4 py-3 text-purple-400">
+              NoGi Class - 90 Minutes
+            </td>
+            <td class="border-t-2 border-gray-200 px-4 py-3"></td>
+          </tr>
+          <tr>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">
+              12:00pm
+            </td>
+            <td
+              class="
+                border-t-2 border-b-2 border-gray-200
+                px-4
+                py-3
+                text-blue-400
+              "
+            >
+              Gi Class - 60 minutes
+            </td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
+            <td
+              class="
+                border-t-2 border-b-2 border-gray-200
+                px-4
+                py-3
+                text-blue-400
+              "
+            >
+              Gi Class - 60 minutes
+            </td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
+          </tr>
+          <tr>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">
+              01:00pm
+            </td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
+            <td
+              class="
+                border-t-2 border-b-2 border-gray-200
+                px-4
+                py-3
+                text-blue-400
+              "
+            >
+              Gi Class - 60 minutes
+            </td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3"></td>
+          </tr>
+          <tr>
+            <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">
+              06:00pm
+            </td>
+            <td
+              class="
+                border-t-2 border-b-2 border-gray-200
+                px-4
+                py-3
+                text-blue-400
+              "
+            >
+              Gi Class - 90 minutes
+            </td>
+            <td
+              class="
+                border-t-2 border-b-2 border-gray-200
+                px-4
+                py-3
+                text-purple-400
+              "
+            >
+              NoGi Class - 90 Minutes
+            </td>
+            <td
+              class="
+                border-t-2 border-b-2 border-gray-200
+                px-4
+                py-3
+                text-blue-400
+              "
+            >
+              Gi Class - 90 minutes
+            </td>
+            <td
+              class="
+                border-t-2 border-b-2 border-gray-200
+                px-4
+                py-3
+                text-purple-400
+              "
+            >
+              NoGi Class - 90 Minutes
+            </td>
+            <td
+              class="
+                border-t-2 border-b-2 border-gray-200
+                px-4
+                py-3
+                text-blue-400
+              "
+            >
+              Gi Class - 90 minutes
+            </td>
+            <td
+              class="
+                border-t-2 border-b-2 border-gray-200
+                px-4
+                py-3
+                text-blue-400
+              "
+            ></td>
+            <td
+              class="
+                border-t-2 border-b-2 border-gray-200
+                px-4
+                py-3
+                text-blue-400
+              "
+            ></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="my-4">
+      * Classes will begin from Monday the 18th of October, 2021
+    </p>
+    <div class="flex">
+      <p><strong>Gi Class: </strong>Training Uniform Required</p>
+      <p class="ml-8">
+        <strong>NoGi Class: </strong>Shorts and a T-Shirt Required
+      </p>
+    </div>
+  </div>
+</div>
+<!--Meet the team Section-->
+<div id="team">
+  <div class="container mx-auto py-20 lg:flex lg:items-start lg:justify-center">
+    <div>
+      <h1 class="text-3xl font-semibold uppercase mb-4 p-4 lg:hidden">
+        Meet the team
+      </h1>
+      <img src="/static/img/sam.jpg" class="mb-4 object-cover" alt="process" />
+    </div>
+    <div class="p-4 lg:pl-8 lg:pt-0">
+      <h1
+        class="
+          text-3xl
+          lg:text-4xl
+          font-semibold
+          uppercase
+          hidden
+          mb-4
+          lg:block
+        "
+      >
+        Meet the Team
+      </h1>
+      <h5 class="text-3xl font-medium mb-4">Head Instructor</h5>
+      <h6 class="text-3xl font-light mb-4">Sam Mc Nally</h6>
+      <div class="flex mb-4">
+        <p><strong>Rank: </strong>Black Belt</p>
+        <p class="ml-8"><strong>Age: </strong>26</p>
+      </div>
+      <p class="mb-4">
+        Sam is one of the top competitors in Europe winning medals in
+        tournaments including the Pan American Championships and the NoGi
+        European Championships.
+      </p>
+      <p class="mb-4">
+        He has been an instructor with ExecBJJ for the past 5 years as the head
+        instructor of our Corporate Programmes.
+      </p>
+      <p class="mb-4">
+        With a wealth of experience he has coached people from complete
+        beginners to competent practitioners.
+      </p>
+      <p>
+        Sam has an analytical approach to teaching with simplicity at the
+        forefront of his instruction.
+      </p>
+    </div>
+  </div>
+</div>
+<!--How to become a member Section-->
+<div class="bg-gray-200" id="member">
+  <div class="px-4 xl:px-0 py-20 container mx-auto">
+    <h1 class="text-3xl font-semibold uppercase mb-12 lg:hidden">
+      How to become a member
+    </h1>
+    <div class="lg:flex lg:flex-row-reverse">
+      <img
+        src="/static/img/process.jpg"
+        class="mb-12 lg:w-7/12 object-cover"
+        alt="process"
+      />
+      <div class="lg:grid lg:grid-rows-10 lg:grid-cols-2 lg:pr-10">
+        <h1
+          class="
+            text-3xl
+            lg:text-4xl
+            font-semibold
+            uppercase
+            lg:pl-4
+            md:col-span-2
+            lg:row-span-1
+            hidden
+            lg:block
+          "
+        >
+          How to become a member
+        </h1>
+        <div
+          class="
+            border-l border-gray-900
+            p-4
+            lg:border-0
+            lg:col-span-1
+            lg:row-span-3
+          "
+        >
+          <p class="text-xl mb-4">Step 1</p>
+          <h5 class="text-xl font-semibold mb-4">Join our waitlist</h5>
+          <p class="mb-4">
+            Add your name and email our waitlist and a member of our team will
+            contact when we have a membership available.
+          </p>
+          <button id="signup" class="text-blue-400 underline">
+            Click here to sign up
+          </button>
+        </div>
+        <div
+          class="
+            border-l border-gray-900
+            p-4
+            lg:border-0
+            lg:col-span-1
+            lg:row-span-3
+          "
+        >
+          <p class="text-xl mb-4">Step 2</p>
+          <h5 class="text-xl font-semibold mb-4">Choose your Membership</h5>
+          <p>
+            Once our team contacts you, you will be given an account and able to
+            choose your membership.
+          </p>
+        </div>
+        <div
+          class="
+            border-l border-gray-900
+            p-4
+            lg:border-0
+            lg:col-span-1
+            lg:row-span-3
+          "
+        >
+          <p class="text-xl mb-4">Step 3</p>
+          <h5 class="text-xl font-semibold mb-4">Check in to Class</h5>
+          <p>Select a class at a time that would suit you and check in.</p>
+        </div>
+        <div class="border-l border-gray-900 p-4 lg:border-0 lg:col-span-1">
+          <p class="text-xl mb-4">Step 4</p>
+          <h5 class="text-xl font-semibold mb-4">Show up and Train!</h5>
+          <p>Enjoy your class!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Contact Us Section-->
+<div
+  style="background-image: url(/static/img/contact.jpg)"
+  class="
+    bg-gray-700 bg-no-repeat
+    relative
+    bg-center bg-cover
+    flex
+    items-center
+    justify-around
+  "
+  id="contact"
+>
+  <div class="absolute inset-0 bg-black opacity-50 h-full flex flex-col"></div>
+  <div
+    class="
+      container
+      inset-0
+      py-20
+      px-4
+      z-10
+      mx-auto
+      flex flex-col
+      lg:flex-row
+      items-center
+      justify-around
+    "
+  >
+    <div class="text-white w-full max-w-screen-sm">
+      <h1 class="text-3xl lg:text-4xl font-semibold uppercase mb-4">
+        Contact Us
+      </h1>
+      <p class="mb-8">
+        Let us help you with anything we can by filling in this form.
+      </p>
+    </div>
+    <!--Form for contact submissions-->
+    <form
+      method="POST"
+      class="h-auto w-full max-w-screen-sm bg-gray-200 p-4 flex flex-col"
+      action="{% url 'members:contact' %}"
+    >
+    {% csrf_token %}
+    {{contact_form|crispy}}
+    <div class="flex">
+        <button
+          type="submit"
+          class="bg-gray-800 text-white uppercase font-medium px-4 py-2 ml-auto"
+          value="Submit"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  {
+    const signup = document.querySelector("#signup");
+    signup.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scroll({ top: 0, left: 0, behavior: "smooth" });
+    });
+  }
+</script>
+{% endblock %}
