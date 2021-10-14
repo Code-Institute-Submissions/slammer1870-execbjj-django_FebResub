@@ -61,17 +61,19 @@ class CustomUser(AbstractUser):
 def create_stripe_id(sender, instance, **kwargs):
 
     name = str("{0} {1}").format(instance.first_name, instance.last_name)
+
+    if instance.stripe_customer_id == None:
     
-    stripe_customer = stripe.Customer.create(
-        name=name,
-        email=instance.email
-    )
+        stripe_customer = stripe.Customer.create(
+            name=name,
+            email=instance.email
+        )
 
-    instance.stripe_customer_id = stripe_customer["id"]
+        instance.stripe_customer_id = stripe_customer["id"]
 
-    post_save.disconnect(create_stripe_id, sender=CustomUser)
-    instance.save()
-    post_save.connect(create_stripe_id, sender=CustomUser)
+        post_save.disconnect(create_stripe_id, sender=CustomUser)
+        instance.save()
+        post_save.connect(create_stripe_id, sender=CustomUser)
 
 #Membership features
 class MembershipFeature(models.Model):
