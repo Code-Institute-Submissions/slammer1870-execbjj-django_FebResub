@@ -209,5 +209,5 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     X_FRAME_OPTIONS = "DENY"
 
-    ALLOWED_HOSTS = ["execbjj-django.herokuapp.com", "execbjj.com", "www.execbjj.com", "*"]
+    ALLOWED_HOSTS = ["execbjj-django.herokuapp.com", "execbjj.com", "www.execbjj.com", "test.execbjj.com", "*"]
 
