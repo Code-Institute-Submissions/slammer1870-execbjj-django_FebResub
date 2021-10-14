@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+import dj_database_url
 from django.contrib.messages import constants as messages
 
 
@@ -120,7 +121,7 @@ WSGI_APPLICATION = 'execbjj.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
+'''DATABASES = {
         'default': {
             'ENGINE': 'djongo',
             'NAME': env('DATABASE_NAME'),
@@ -129,6 +130,10 @@ DATABASES = {
                 'host': env('DATABASE_URL')
             }  
         }
+}'''
+
+DATABASES = {
+    'default': dj_database_url.parse(env('DATABASE_URL'))
 }
 
 
