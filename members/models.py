@@ -89,6 +89,7 @@ class Membership(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=7)
     frequency = models.CharField(max_length=50)
     currency = models.CharField(max_length=50)
+    active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
