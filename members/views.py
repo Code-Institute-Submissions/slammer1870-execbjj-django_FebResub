@@ -145,14 +145,14 @@ def get_user_membership(request):
 
 class MembershipSelectView(LoginRequiredMixin, ListView):
     model = Membership
+    template_name = 'members/membership_list.html'
 
-    def get_queryset(self):
-        queryset = Membership.objects.filter(active=True)
-        return queryset
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         current_membership = get_user_membership(self.request)
+        context['memberships'] = Membership.objects.filter(active=True)
+
         if current_membership:
             context['current_membership'] = current_membership
         return context

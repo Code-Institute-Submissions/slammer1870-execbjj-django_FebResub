@@ -12,7 +12,7 @@
       </p>
     </div>
     <div class="flex flex-wrap -m-4">
-      {% for membership in object_list %}
+      {% for membership in memberships %}
       <div class="p-4 md:w-1/3 w-full">
         <div class="h-full p-6 border-2 flex flex-col relative overflow-hidden">
           {% if membership == current_membership.membership %}<span
