@@ -1,1 +1,1 @@
-web: gunicorn execbjj.wsgi --log-file -
+web: gunicorn execbjj.wsgi --log-file - --timeout 90
