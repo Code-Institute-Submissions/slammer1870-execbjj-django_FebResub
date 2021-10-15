@@ -188,6 +188,42 @@ class MembershipSelectView(LoginRequiredMixin, ListView):
             print(e)
             return e
 
+def beginners_course(request):
+
+    customer_id = request.user.stripe_customer_id
+    #Gets the membership type from hidden input in form
+    membership = Membership.objects.get(name=request.POST.get('membership'))
+
+    if membership.slug == "beginners-course":
+        mode = "payment"
+    else:
+        mode = "subscription"
+
+    try:
+            checkout_session = stripe.checkout.Session.create(
+                customer=customer_id,
+                payment_method_types=['card'],
+                line_items=[
+                    {
+                        'price': membership.stripe_price_id,
+                        'quantity': 1,
+                    },
+                ],
+                
+                mode=mode,
+                #Redirects to referer url
+                success_url=request.build_absolute_uri() +
+                'success?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=request.build_absolute_uri()
+            )
+            return redirect(checkout_session.url, code=303)
+        
+    except Exception as e:
+        print(e)
+        return e
+
+    
+
 @login_required
 def success_view(request):
 
@@ -201,8 +237,9 @@ def success_view(request):
     checkout_session = stripe.checkout.Session.retrieve(session_id)
     
     #Creates new subscription with request user, priceID from line item (only works with one line item), subscriptionID from checkout session and sets status to active
-    subscription, created = Subscription.objects.get_or_create(user=request.user, membership=Membership.objects.get(stripe_price_id=line_item.data[0].price.id), stripe_subscription_id=checkout_session['subscription'], status="active")
-    subscription.save()
+    if checkout_session['subscription']:
+        subscription, created = Subscription.objects.get_or_create(user=request.user, membership=Membership.objects.get(stripe_price_id=line_item.data[0].price.id), stripe_subscription_id=checkout_session['subscription'], status="active")
+        subscription.save()
 
     messages.success(request, "Thank for you subscribing!")
 
