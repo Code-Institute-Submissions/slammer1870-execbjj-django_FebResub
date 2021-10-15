@@ -101,7 +101,7 @@ class Subscription(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     membership = models.ForeignKey(Membership, on_delete=models.CASCADE, related_name='memberships')
     created = models.DateTimeField(auto_now_add=True)
-    stripe_subscription_id = models.CharField(max_length=50)
+    stripe_subscription_id = models.CharField(max_length=50, null=True)
     status = models.CharField(max_length=100)
 
     def __str__(self):
