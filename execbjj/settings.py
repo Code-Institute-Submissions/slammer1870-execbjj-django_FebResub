@@ -121,20 +121,18 @@ WSGI_APPLICATION = 'execbjj.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-'''DATABASES = {
-        'default': {
-            'ENGINE': 'djongo',
-            'NAME': env('DATABASE_NAME'),
-            'ENFORCE_SCHEMA': False,
-            'CLIENT': {
-                'host': env('DATABASE_URL')
-            }  
-        }
-}'''
 
-DATABASES = {
-    'default': dj_database_url.parse(env('DATABASE_URL'))
+if DEBUG:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
+    }
 }
+else:
+    DATABASES = {
+        'default': dj_database_url.parse(env('DATABASE_URL'))
+    }
 
 
 # Password validation
