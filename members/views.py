@@ -164,6 +164,11 @@ class MembershipSelectView(LoginRequiredMixin, ListView):
 
         #Gets the membership type from hidden input in form
         membership = Membership.objects.get(name=request.POST.get('membership'))
+
+        if membership.slug == "beginners-course":
+            mode = "payment"
+        else:
+            mode = "subscription"
         
         try:
             checkout_session = stripe.checkout.Session.create(
@@ -176,7 +181,7 @@ class MembershipSelectView(LoginRequiredMixin, ListView):
                     },
                 ],
                 
-                mode='subscription',
+                mode=mode,
                 #Redirects to referer url
                 success_url=request.build_absolute_uri() +
                 'success?session_id={CHECKOUT_SESSION_ID}',
@@ -193,6 +198,8 @@ def beginners_course(request):
     customer_id = request.user.stripe_customer_id
     #Gets the membership type from hidden input in form
     membership = Membership.objects.get(name=request.POST.get('membership'))
+
+    print(membership)
 
     if membership.slug == "beginners-course":
         mode = "payment"
@@ -235,11 +242,18 @@ def success_view(request):
 
     #Retrieves checkout session object
     checkout_session = stripe.checkout.Session.retrieve(session_id)
+
+    '''print("checkout session is", checkout_session)
+
+    if checkout_session['subscription']:
+        sub_id = checkout_session['subscription']
+    else:
+        sub_id = checkout_session['payment']'''
+
     
     #Creates new subscription with request user, priceID from line item (only works with one line item), subscriptionID from checkout session and sets status to active
-    if checkout_session['subscription']:
-        subscription, created = Subscription.objects.get_or_create(user=request.user, membership=Membership.objects.get(stripe_price_id=line_item.data[0].price.id), stripe_subscription_id=checkout_session['subscription'], status="active")
-        subscription.save()
+    subscription, created = Subscription.objects.update_or_create(user=request.user, defaults={'membership':Membership.objects.get(stripe_price_id=line_item.data[0].price.id), 'stripe_subscription_id':checkout_session['subscription'], 'status':"active"})
+    subscription.save()
 
     messages.success(request, "Thank for you subscribing!")
 
@@ -285,7 +299,7 @@ def webhook(request):
     event_type = event['type']
     data_object = data['object']
 
-    if event_type == 'invoice.payment_succeededTEST':
+    if event_type == 'payment_intent.succeeded':
         # Used to provision services after the trial has ended.
         # The status of the invoice will show up as paid. Store the status in your
         # database to reference when a user accesses your service to avoid hitting rate
@@ -301,10 +315,12 @@ def webhook(request):
         membership = Membership.objects.get(stripe_price_id=stripe_price_id)
 
         user = CustomUser.objects.get(stripe_customer_id=stripe_customer_id)
-        user.subscription.status = stripe_sub["status"]
-        user.subscription.stripe_subscription_id = webhook_object["subscription"]
-        user.subscription.membership = membership
-        user.subscription.save()
+        
+        subscription = Subscription.objects.get(user=user)
+        #subscription.status = stripe_sub["status"]
+        subscription.stripe_subscription_id = webhook_object["id"]
+        subscription.membership = membership
+        subscription.save()
 
     if event_type == 'customer.subscription.updated':
         # Used to provision services after the trial has ended.
