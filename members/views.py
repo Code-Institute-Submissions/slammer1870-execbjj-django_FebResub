@@ -195,39 +195,9 @@ class MembershipSelectView(LoginRequiredMixin, ListView):
 
 def beginners_course(request):
 
-    customer_id = request.user.stripe_customer_id
-    #Gets the membership type from hidden input in form
-    membership = Membership.objects.get(name=request.POST.get('membership'))
+    messages.info(request, "To join the Beginner's Course, Create an Account > Select a Membership > Choose the Beginner's Course")
 
-    print(membership)
-
-    if membership.slug == "beginners-course":
-        mode = "payment"
-    else:
-        mode = "subscription"
-
-    try:
-            checkout_session = stripe.checkout.Session.create(
-                customer=customer_id,
-                payment_method_types=['card'],
-                line_items=[
-                    {
-                        'price': membership.stripe_price_id,
-                        'quantity': 1,
-                    },
-                ],
-                
-                mode=mode,
-                #Redirects to referer url
-                success_url=request.build_absolute_uri() +
-                'success?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=request.build_absolute_uri()
-            )
-            return redirect(checkout_session.url, code=303)
-        
-    except Exception as e:
-        print(e)
-        return e
+    return redirect('register')
 
     
 

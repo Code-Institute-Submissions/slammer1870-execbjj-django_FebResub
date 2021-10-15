@@ -21,7 +21,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls.conf import include
 
 
-from members.views import index_page, dashboard_page, account_page, membership_page, register, MembershipSelectView, webhook, newsletter
+from members.views import index_page, dashboard_page, account_page, membership_page, register, MembershipSelectView, webhook, newsletter, beginners_course
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,4 +34,5 @@ urlpatterns = [
     path('account/', account_page, name="account_page"),
     path('webhook/', webhook, name='webhook'),
     path('newsletter/', newsletter, name='newsletter'),
+    path('beginners-course/', beginners_course, name="beginners_course")
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
