@@ -213,16 +213,14 @@ def success_view(request):
     #Retrieves checkout session object
     checkout_session = stripe.checkout.Session.retrieve(session_id)
 
-    '''print("checkout session is", checkout_session)
-
     if checkout_session['subscription']:
         sub_id = checkout_session['subscription']
     else:
-        sub_id = checkout_session['payment']'''
+        sub_id = ""
 
     
     #Creates new subscription with request user, priceID from line item (only works with one line item), subscriptionID from checkout session and sets status to active
-    subscription, created = Subscription.objects.update_or_create(user=request.user, defaults={'membership':Membership.objects.get(stripe_price_id=line_item.data[0].price.id), 'stripe_subscription_id':checkout_session['subscription'], 'status':"active"})
+    subscription, created = Subscription.objects.update_or_create(user=request.user, defaults={'membership':Membership.objects.get(stripe_price_id=line_item.data[0].price.id), 'stripe_subscription_id':sub_id, 'status':"active"})
     subscription.save()
 
     messages.success(request, "Thank for you subscribing!")
@@ -269,7 +267,7 @@ def webhook(request):
     event_type = event['type']
     data_object = data['object']
 
-    if event_type == 'payment_intent.succeeded':
+    '''if event_type == 'payment_intent.succeeded':
         # Used to provision services after the trial has ended.
         # The status of the invoice will show up as paid. Store the status in your
         # database to reference when a user accesses your service to avoid hitting rate
@@ -278,6 +276,8 @@ def webhook(request):
 
         webhook_object = data["object"]
         stripe_customer_id = webhook_object["customer"]
+
+        print(webhook_object)
 
         stripe_sub = stripe.Subscription.retrieve(webhook_object["subscription"])
         stripe_price_id = stripe_sub["plan"]["id"]
@@ -290,7 +290,7 @@ def webhook(request):
         #subscription.status = stripe_sub["status"]
         subscription.stripe_subscription_id = webhook_object["id"]
         subscription.membership = membership
-        subscription.save()
+        subscription.save()'''
 
     if event_type == 'customer.subscription.updated':
         # Used to provision services after the trial has ended.
