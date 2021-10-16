@@ -310,7 +310,6 @@ def webhook(request):
 
         user = CustomUser.objects.get(stripe_customer_id=stripe_customer_id)
 
-
         subscription = Subscription.objects.get(user=user)
         subscription.status = stripe_sub["status"]
         subscription.stripe_subscription_id = webhook_object["id"]
