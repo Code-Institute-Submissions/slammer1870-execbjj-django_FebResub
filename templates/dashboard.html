@@ -305,6 +305,118 @@
         </tbody>
       </table>
     </div>
+     <!--Dynamic Schedule-->
+    <div class="w-full lg:w-4/12 my-8 lg:m-0">
+      <h3 class="text-2xl font-medium mb-4 uppercase">Dynamic Schedule</h3>
+      <div class="flex items-center justify-between">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="9.707"
+          height="18.037"
+          viewBox="0 0 9.707 18.037"
+        >
+          <line
+            id="Line_15"
+            data-name="Line 15"
+            x1="9"
+            y2="9"
+            transform="translate(0.354 0.354)"
+            fill="none"
+            stroke="#000"
+            stroke-width="1"
+          />
+          <line
+            id="Line_16"
+            data-name="Line 16"
+            x1="9"
+            y1="9"
+            transform="translate(0.354 8.684)"
+            fill="none"
+            stroke="#000"
+            stroke-width="1"
+          />
+        </svg>
+        <span class="font-light">{{schedule.date|date:"D d F, Y"}}</span
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="9.707"
+          height="18.037"
+          viewBox="0 0 9.707 18.037"
+        >
+          <line
+            id="Line_17"
+            data-name="Line 17"
+            x1="9"
+            y2="9"
+            transform="translate(9.354 0.354) rotate(90)"
+            fill="none"
+            stroke="#000"
+            stroke-width="1"
+          />
+          <line
+            id="Line_18"
+            data-name="Line 18"
+            x1="9"
+            y1="9"
+            transform="translate(9.354 8.684) rotate(90)"
+            fill="none"
+            stroke="#000"
+            stroke-width="1"
+          />
+        </svg>
+      </div>
+      <table class="table-auto w-full text-left whitespace-no-wrap my-6">
+        <tbody>
+          <tr class="bg-gray-200">
+            <td class="px-4 py-3">10:00am</td>
+            <td class="px-4 py-3 font-medium">Gi Class</td>
+            <td class="px-4 py-3 text-right">
+               <form method="POST" action="{% url 'members:check_in' %}">
+               {% csrf_token %}
+               <button type="submit" class="bg-indigo-400 px-2 py-1 text-white flex items-center ml-auto">
+                Check In<svg
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                class="w-4 h-4 ml-2"
+                viewBox="0 0 24 24"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7"></path>
+              </svg>
+              </button></form>
+            </td>
+          </tr>
+          {% for lesson in schedule.lessons.all %}
+           <tr class="{% if forloop.counter0|divisibleby:2 %}bg-gray-50{% else %}bg-gray-200{% endif %}">
+            <td class="px-4 py-3">{{lesson.time|date:"P"}}</td>
+            <td class="px-4 py-3 font-medium">{{lesson.class_type}}</td>
+            <td class="px-4 py-3 text-right">
+            {% if user in lesson.attendees.all %}You are checked in{% endif %}
+               <form method="POST" action="{% url 'checkins:checkin_view' %}">
+               {% csrf_token %}
+               <button type="submit" class="bg-indigo-400 px-2 py-1 text-white flex items-center ml-auto">
+                Check In<svg
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                class="w-4 h-4 ml-2"
+                viewBox="0 0 24 24"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7"></path>
+              </svg>
+              </button>
+              <input type="hidden" name="lesson" value="{{lesson}}" />
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
     <!--Technique of the Week-->
     <div class="w-full lg:w-4/12 mb-4 lg:m-0">
       <h3 class="text-2xl font-medium mb-4 uppercase">Technique of the Week</h3>

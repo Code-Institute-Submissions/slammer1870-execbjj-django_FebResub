@@ -10,6 +10,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 from members.models import CustomUser, Membership, Subscription
+from checkins.models import Schedule
+
+from datetime import datetime
 
 import stripe
 import json
@@ -124,13 +127,18 @@ def dashboard_page(request):
 
     subscription = Subscription.objects.filter(user=request.user)
 
+    schedule = Schedule.objects.get(date=datetime.today())
+
+    print(schedule)
+
     if subscription.exists():
         membership = subscription.first().membership
     else:
         membership = None
 
     context = {
-        "membership": membership
+        "membership": membership,
+        "schedule": schedule
     }
     return render(request, "dashboard.html", context)
 

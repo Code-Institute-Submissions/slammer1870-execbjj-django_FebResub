@@ -31,6 +31,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name="logout"),
     path('dashboard/', dashboard_page, name="dashboard_page"),
     path('membership/', include('members.urls')),
+    path('checkin/', include('checkins.urls')),
     path('account/', account_page, name="account_page"),
     path('webhook/', webhook, name='webhook'),
     path('newsletter/', newsletter, name='newsletter'),
