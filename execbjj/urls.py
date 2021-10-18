@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls.conf import include
 
 
@@ -29,6 +29,10 @@ urlpatterns = [
     path('register/', register, name="register"),
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
+    path('password-reset/', PasswordResetView.as_view(), name="password_reset"),
+    path('password-reset-done/', PasswordResetDoneView.as_view(), name="password_reset_done"),
+    path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
+    path('password-reset-complete/', PasswordResetCompleteView.as_view(), name="password_reset_complete"),
     path('dashboard/', dashboard_page, name="dashboard_page"),
     path('membership/', include('members.urls')),
     path('account/', account_page, name="account_page"),
