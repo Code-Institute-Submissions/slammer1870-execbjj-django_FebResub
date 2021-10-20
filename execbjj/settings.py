@@ -79,7 +79,8 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_tailwind",
 
-    'members'
+    'members',
+    'checkins'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
@@ -161,7 +162,7 @@ AUTH_USER_MODEL = 'members.CustomUser'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'GB'
 
 USE_I18N = True
 
