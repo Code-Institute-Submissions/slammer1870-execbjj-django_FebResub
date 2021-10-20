@@ -1,0 +1,50 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="w-screen h-screen flex">
+  <div class="container relative mt-20 mx-auto">
+    <div class="top-0 left-0 absolute px-4 lg:px-0">
+      <svg
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        class="w-12 h-12"
+        viewBox="0 0 24 24"
+        transform="rotate(180)"
+      >
+        <path d="M5 12h14M12 5l7 7-7 7"></path>
+      </svg>
+    </div>
+    <div class="max-w-screen-md w-full p-4 flex flex-col py-36 mx-auto">
+      <h3 class="text-3xl font-medium mb-4">Cancel your Booking</h3>
+      <p class="mb-6">
+        Are you sure you want to cancel your booking for
+        <strong
+          >{{lesson.class_type}} on {{lesson.time|date:"D, d M Y"}} at
+          {{lesson.time|date:"P"}}?</strong
+        >
+      </p>
+      <div class="flex items-center justify-between">
+        <a
+          href="{% url 'dashboard_redirect' %}"
+          class="bg-yellow-400 px-4 py-2 text-white text-center w-5/12"
+          >Take me Back!</a
+        >
+        <form
+          method="post"
+          action="{% url 'checkins:checkin_cancel_view' %}"
+          class="ml-4 w-6/12"
+        >
+          {% csrf_token %}<button
+            type="submit"
+            class="bg-red-400 px-4 py-2 text-white w-full"
+          >
+            Cancel my Booking
+          </button>
+          <input type="hidden" name="lesson" value="{{lesson}}" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
