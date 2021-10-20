@@ -72,7 +72,7 @@ def cancel_check_in(request):
         attendee =  Attendee.objects.get(lesson=lesson, user=request.user)
         attendee.delete()
 
-        messages.info(request, "You have successfully cancelled your appointment")
+        messages.warning(request, "You have successfully cancelled your appointment")
         return redirect('dashboard_page', lesson.schedule.date)        
 
 
