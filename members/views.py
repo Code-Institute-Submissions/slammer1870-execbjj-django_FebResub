@@ -129,7 +129,9 @@ def dashboard_page(request, date):
     print(year, month, day)
 
     try:
-        datetime(year=int(year), month=int(month), day=int(day))
+        date_object = datetime(year=int(year), month=int(month), day=int(day))
+        if date_object < datetime.today() - timedelta(days=1):
+            return redirect('dashboard_redirect')
     except ValueError:
         messages.error(request, "The date that you have entered is invalid")
         return redirect('dashboard_redirect')
