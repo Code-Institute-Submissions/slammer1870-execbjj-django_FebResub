@@ -264,7 +264,7 @@ def success_view(request):
 
     messages.success(request, "Thank for you subscribing!")
 
-    return redirect('dashboard_page')
+    return redirect('dashboard_redirect')
 
 def check_in(request):
 

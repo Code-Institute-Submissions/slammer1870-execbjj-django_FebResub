@@ -20,7 +20,7 @@ class Lesson(models.Model):
     
 
 class Attendee(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=True)
     checked_in = models.BooleanField(default=False)
 
