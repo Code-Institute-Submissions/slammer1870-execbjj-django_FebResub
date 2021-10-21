@@ -10,6 +10,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 from members.models import CustomUser, Membership, Subscription
+from checkins.models import Schedule
+
+from datetime import datetime, timedelta
 
 import stripe
 import json
@@ -113,26 +116,64 @@ def register(request):
             raw_password = form.cleaned_data.get('password1')
             user = form.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('dashboard_page')
+            return redirect('dashboard_redirect')
     else:
         form = RegisterForm()
     return render(request, 'register.html', {'form': form})
 
 
 @login_required
-def dashboard_page(request):
+def dashboard_page(request, date):
+
+    year, month, day = date.split('-')
+    print(year, month, day)
+
+    try:
+        date_object = datetime(year=int(year), month=int(month), day=int(day))
+        if date_object < datetime.today() - timedelta(days=1):
+            return redirect('dashboard_redirect')
+    except ValueError:
+        messages.error(request, "The date that you have entered is invalid")
+        return redirect('dashboard_redirect')
 
     subscription = Subscription.objects.filter(user=request.user)
+
+    day = Schedule.objects.filter(date=date)
+
+    if day.exists():
+        schedule = day.first()
+    else:
+        schedule = None
 
     if subscription.exists():
         membership = subscription.first().membership
     else:
         membership = None
 
+    today = datetime.strptime(date, "%Y-%m-%d")
+
+    tomorrow_date = today + timedelta(days=1)
+
+    tomorrow = datetime.strftime(tomorrow_date, "%Y-%m-%d")
+
+    if today >= datetime.today():
+        yesterday_date = today - timedelta(days=1)
+        yesterday = datetime.strftime(yesterday_date, "%Y-%m-%d")
+    else:
+        yesterday = None
+
     context = {
-        "membership": membership
+        "membership": membership,
+        "today": today,
+        "yesterday": yesterday,
+        "tomorrow": tomorrow,
+        "schedule": schedule
     }
     return render(request, "dashboard.html", context)
+
+@login_required
+def dashboard_redirect(request):
+    return redirect('dashboard_page', datetime.strftime(datetime.today(), "%Y-%m-%d"))
 
 def membership_page(request):
     return render(request, "memberships.html")
@@ -225,7 +266,7 @@ def success_view(request):
 
     messages.success(request, "Thank for you subscribing!")
 
-    return redirect('dashboard_page')
+    return redirect('dashboard_redirect')
 
 def check_in(request):
 
