@@ -116,7 +116,7 @@ def register(request):
             raw_password = form.cleaned_data.get('password1')
             user = form.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('dashboard_page')
+            return redirect('dashboard_redirect')
     else:
         form = RegisterForm()
     return render(request, 'register.html', {'form': form})

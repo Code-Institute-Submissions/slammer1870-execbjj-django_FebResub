@@ -21,7 +21,7 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, 
 from django.urls.conf import include
 
 
-from members.views import index_page, dashboard_page, account_page, membership_page, register, MembershipSelectView, webhook, newsletter, beginners_course, dashboard_redirect
+from members.views import index_page, dashboard_page, account_page, register, webhook, newsletter, beginners_course, dashboard_redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
