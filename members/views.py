@@ -223,6 +223,7 @@ class MembershipSelectView(LoginRequiredMixin, ListView):
                 ],
                 
                 mode=mode,
+                allow_promotion_codes=True,
                 #Redirects to referer url
                 success_url=request.build_absolute_uri() +
                 'success?session_id={CHECKOUT_SESSION_ID}',
