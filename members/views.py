@@ -126,7 +126,6 @@ def register(request):
 def dashboard_page(request, date):
 
     year, month, day = date.split('-')
-    print(year, month, day)
 
     try:
         date_object = datetime(year=int(year), month=int(month), day=int(day))
