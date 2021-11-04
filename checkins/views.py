@@ -17,8 +17,6 @@ from checkins.models import Attendee, Lesson, Schedule
 
 from datetime import datetime, timedelta
 from django.utils import timezone
-now = timezone.now()
-
 
 @login_required
 def check_in(request):
@@ -33,7 +31,7 @@ def check_in(request):
             lesson = Lesson.objects.get(time=request.POST.get('lesson'))
             
             #check if user has an active booking
-            bookings = Attendee.objects.filter(user=request.user, lesson__time__gte=now)
+            bookings = Attendee.objects.filter(user=request.user, lesson__time__gte=timezone.localtime())
 
             if bookings.exists():
                 messages.warning(request, "You already have an active booking, you can only check into one class at a time!")
@@ -58,8 +56,6 @@ def check_in(request):
 def confirm_cancel_view(request, lesson):
 
     lesson = get_object_or_404(Lesson, time=lesson)
-
-    print(lesson)
 
     return render(request, "checkins/confirm_cancel.html", {"lesson": lesson})
 
