@@ -131,13 +131,15 @@
             <td class="px-4 py-3">{{lesson.time|date:"h:iA"}}</td>
             <td class="px-4 py-3 font-medium flex flex-col item-start">
             {{lesson.class_type}}
-            <span class="font-thin text-xs flex items-center relative">
-              <span class="flex relative h-2 w-2 mr-1">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            {% if not lesson|already_happened %}
+              <span class="font-thin text-xs flex items-center relative">
+                <span class="flex relative h-2 w-2 mr-1">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                {{lesson.remaining}} Spots Left
               </span>
-              {{lesson.remaining}} Spots Left
-            </span>
+            {% endif %}
             </td>
             <td class="px-4 py-3 text-right">{% if lesson|already_happened %}
             {% elif user|checked_in:lesson %}<div class="flex items-center justify-end"><p class="bg-green-400 px-2 py-1 text-white text-center tracking-tighter">
