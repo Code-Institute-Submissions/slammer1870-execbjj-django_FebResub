@@ -126,7 +126,6 @@ def register(request):
 def dashboard_page(request, date):
 
     year, month, day = date.split('-')
-    print(year, month, day)
 
     try:
         date_object = datetime(year=int(year), month=int(month), day=int(day))
@@ -223,6 +222,7 @@ class MembershipSelectView(LoginRequiredMixin, ListView):
                 ],
                 
                 mode=mode,
+                allow_promotion_codes=True,
                 #Redirects to referer url
                 success_url=request.build_absolute_uri() +
                 'success?session_id={CHECKOUT_SESSION_ID}',
