@@ -15,6 +15,12 @@ class Lesson(models.Model):
     class_type = models.CharField(choices=CLASS_CHOICES, max_length=12)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
 
+    @property
+    def remaining(self):
+        #NB Class size is hard coded to 20
+        amount = 20 - len(self.attendee_set.all())
+        return amount
+
     def __str__(self):
         return str(self.time)
     
