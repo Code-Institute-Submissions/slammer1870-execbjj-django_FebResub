@@ -21,6 +21,9 @@ class Lesson(models.Model):
         amount = 20 - len(self.attendee_set.all())
         return amount
 
+    class Meta:
+        ordering = ['time']
+
     def __str__(self):
         return str(self.time)
     
