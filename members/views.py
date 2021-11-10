@@ -42,11 +42,13 @@ def index_page(request):
     }
     return render(request, "index.html", context)
 
-#Newsletter signup view
+# Newsletter signup view
+
+
 def newsletter(request):
-    if request.method == 'POST': #Checks that form posts valid data
-        
-        form = NewsletterForm(request.POST) 
+    if request.method == 'POST':  # Checks that form posts valid data
+
+        form = NewsletterForm(request.POST)
 
         if form.is_valid():
 
@@ -54,51 +56,59 @@ def newsletter(request):
 
             first, *last = name.split()
 
-            subscriber_hash = hashlib.md5(form.cleaned_data.get('email').encode('utf-8')).hexdigest() #Gets subscriber hash
+            subscriber_hash = hashlib.md5(form.cleaned_data.get(
+                'email').encode('utf-8')).hexdigest()  # Gets subscriber hash
 
             try:
-                client = MailchimpMarketing.Client() #Configures Mailchimp client
+                client = MailchimpMarketing.Client()  # Configures Mailchimp client
                 client.set_config({
-                "api_key": settings.MAILCHIMP_API_KEY,
-                "server": settings.MAILCHIMP_SERVER
-            })
+                    "api_key": settings.MAILCHIMP_API_KEY,
+                    "server": settings.MAILCHIMP_SERVER
+                })
 
-                #Adds poster to newsletter
-                client.lists.add_list_member(settings.MAILCHIMP_LIST_ID, {"merge_fields":{"FNAME": first, "LNAME": " ".join(last)} ,"email_address": form.cleaned_data.get('email'), "status": "subscribed", "tags":["beginners course"]})
+                # Adds poster to newsletter
+                client.lists.add_list_member(settings.MAILCHIMP_LIST_ID, {"merge_fields": {"FNAME": first, "LNAME": " ".join(
+                    last)}, "email_address": form.cleaned_data.get('email'), "status": "subscribed", "tags": ["beginners course"]})
 
                 messages.success(request, "Thank you for subscribing")
                 return redirect('index_page')
             except ApiClientError as error:
                 print(error.text)
                 res = json.loads(error.text)
-                #Custom condition for users that are already subscribed
+                # Custom condition for users that are already subscribed
                 if res['title'] == "Member Exists":
-                    client.lists.update_list_member_tags(settings.MAILCHIMP_LIST_ID, subscriber_hash, {"tags":[{"name": "beginners course", "status": "active"}]})
+                    client.lists.update_list_member_tags(settings.MAILCHIMP_LIST_ID, subscriber_hash, {
+                                                         "tags": [{"name": "beginners course", "status": "active"}]})
                     messages.warning(request, "You are already subscribed!")
                     return redirect('index_page')
-                messages.error(request, "An error occured")  
+                messages.error(request, "An error occured")
                 return redirect('index_page')
     messages.error(request, "That didn't work")
     return redirect('index_page')
 
+
 def contact(request):
     if request.method == 'POST':
-        form = ContactForm(request.POST)        
+        form = ContactForm(request.POST)
 
-        #Check form post data is valid
+        # Check form post data is valid
         if form.is_valid():
 
-            #SendGrid configuration
+            # SendGrid configuration
             message = Mail(
                 from_email='sam@execbjj.com',
                 to_emails='sam@execbjj.com',
-                subject='New form submission from {}'.format(form.cleaned_data.get('name')),
+                subject='New form submission from {}'.format(
+                    form.cleaned_data.get('name')),
                 plain_text_content=form.cleaned_data.get('message'))
-            message.reply_to=form.cleaned_data.get('email'), form.cleaned_data.get('name')
+            message.reply_to = form.cleaned_data.get(
+                'email'), form.cleaned_data.get('name')
             try:
-                sg = SendGridAPIClient(settings.SENDGRID_API_KEY) #Initialises Sendgrid Client
+                # Initialises Sendgrid Client
+                sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
                 response = sg.send(message)
-                messages.success(request, "Thank you for your message, we will respond shortly")
+                messages.success(
+                    request, "Thank you for your message, we will respond shortly")
                 return redirect('index_page')
             except Exception as e:
                 messages.error(request, "Oops something went wrong")
@@ -170,12 +180,15 @@ def dashboard_page(request, date):
     }
     return render(request, "dashboard.html", context)
 
+
 @login_required
 def dashboard_redirect(request):
     return redirect('dashboard_page', datetime.strftime(datetime.today(), "%Y-%m-%d"))
 
+
 def membership_page(request):
     return render(request, "memberships.html")
+
 
 def get_user_membership(request):
     user_membership_qs = Subscription.objects.filter(user=request.user)
@@ -183,10 +196,10 @@ def get_user_membership(request):
         return user_membership_qs.first()
     return None
 
+
 class MembershipSelectView(LoginRequiredMixin, ListView):
     model = Membership
     template_name = 'members/membership_list.html'
-
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -197,19 +210,20 @@ class MembershipSelectView(LoginRequiredMixin, ListView):
             context['current_membership'] = current_membership
         return context
 
-    #Handles POST request from the memberships page
+    # Handles POST request from the memberships page
     def post(self, request, *args, **kwargs):
 
         customer_id = request.user.stripe_customer_id
 
-        #Gets the membership type from hidden input in form
-        membership = Membership.objects.get(name=request.POST.get('membership'))
+        # Gets the membership type from hidden input in form
+        membership = Membership.objects.get(
+            name=request.POST.get('membership'))
 
         if membership.slug == "beginners-course":
             mode = "payment"
         else:
             mode = "subscription"
-        
+
         try:
             checkout_session = stripe.checkout.Session.create(
                 customer=customer_id,
@@ -220,38 +234,83 @@ class MembershipSelectView(LoginRequiredMixin, ListView):
                         'quantity': 1,
                     },
                 ],
-                
+
                 mode=mode,
                 allow_promotion_codes=True,
-                #Redirects to referer url
+                # Redirects to referer url
                 success_url=request.build_absolute_uri() +
                 'success?session_id={CHECKOUT_SESSION_ID}',
                 cancel_url=request.build_absolute_uri()
             )
             return redirect(checkout_session.url, code=303)
-        
+
         except Exception as e:
             print(e)
             return e
 
+
 def beginners_course(request):
 
-    messages.info(request, "To join the Beginner's Course, Create an Account > Select a Membership > Choose the Beginner's Course")
+    products = {
+        'beginners-course': {
+            'name': 'Intro to Brazilian Jiu Jitsu - 6 Week Course',
+            'price': 14900,
+        },
+    }
 
-    return redirect('register')
+    if request.method == "POST":
 
-    
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                line_items=[
+                    {
+                        'price_data': {
+                            'product_data': {
+                                'name': 'Intro to Brazilian Jiu Jitsu - 6 Week Course',
+                            },
+                            'unit_amount': 18900,
+                            'currency': 'eur',
+                        },
+                        'quantity': 1,
+                    },
+                ],
+                payment_method_types=['card'],
+                mode='payment',
+                # Redirects to referer url
+                success_url=request.build_absolute_uri() +
+                'success?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=request.build_absolute_uri()
+            )
+            return redirect(checkout_session.url, code=303)
+        except Exception as e:
+            print(e)
+            return e
+
+    return render(request, "beginners_course.html")
+
+
+def beginners_success(request):
+    session_id = request.GET.get("session_id")
+    session = stripe.checkout.Session.retrieve(session_id)
+    customer = stripe.Customer.retrieve(session.customer)
+
+    context = {
+        "customer": customer
+    }
+
+    return render(request, "success.html", context)
+
 
 @login_required
 def success_view(request):
 
-    #Gets sessionID from URL parameters
+    # Gets sessionID from URL parameters
     session_id = request.GET.get("session_id")
 
-    #Gets line item from checkout session
+    # Gets line item from checkout session
     line_item = stripe.checkout.Session.list_line_items(session_id, limit=1)
 
-    #Retrieves checkout session object
+    # Retrieves checkout session object
     checkout_session = stripe.checkout.Session.retrieve(session_id)
 
     if checkout_session['subscription']:
@@ -259,14 +318,15 @@ def success_view(request):
     else:
         sub_id = ""
 
-    
-    #Creates new subscription with request user, priceID from line item (only works with one line item), subscriptionID from checkout session and sets status to active
-    subscription, created = Subscription.objects.update_or_create(user=request.user, defaults={'membership':Membership.objects.get(stripe_price_id=line_item.data[0].price.id), 'stripe_subscription_id':sub_id, 'status':"active"})
+    # Creates new subscription with request user, priceID from line item (only works with one line item), subscriptionID from checkout session and sets status to active
+    subscription, created = Subscription.objects.update_or_create(user=request.user, defaults={'membership': Membership.objects.get(
+        stripe_price_id=line_item.data[0].price.id), 'stripe_subscription_id': sub_id, 'status': "active"})
     subscription.save()
 
     messages.success(request, "Thank for you subscribing!")
 
     return redirect('dashboard_redirect')
+
 
 def check_in(request):
 
@@ -275,12 +335,14 @@ def check_in(request):
         subscription = Subscription.objects.filter(user=request.user)
 
         if subscription.exists():
-        
-            messages.info(request, "Check ins will open soon, keep an eye on your email inbox!")
+
+            messages.info(
+                request, "Check ins will open soon, keep an eye on your email inbox!")
             return redirect('dashboard_page')
 
         else:
-            messages.error(request, "You must have an active membership to check in to class")
+            messages.error(
+                request, "You must have an active membership to check in to class")
             return redirect('dashboard_page')
     return redirect('dashboard_page')
 
@@ -299,11 +361,11 @@ def webhook(request):
     try:
         event = stripe.Event.construct_from(
             json.loads(payload), stripe.api_key
-    )
+        )
         data = event['data']
     except Exception as e:
         return e
-        
+
     # Get the type of webhook event sent - used to check the status of PaymentIntents.
     event_type = event['type']
     data_object = data['object']
@@ -375,14 +437,16 @@ def webhook(request):
 
     return HttpResponse(status=200)
 
+
 @login_required
 def create_customer_portal(request):
 
     session = stripe.billing_portal.Session.create(
-        customer = request.user.stripe_customer_id,
-        return_url = "http://execbjj.com/dashboard",
+        customer=request.user.stripe_customer_id,
+        return_url="http://execbjj.com/dashboard",
     )
     return redirect(session.url)
+
 
 def account_page(request):
     return True
