@@ -21,7 +21,7 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, 
 from django.urls.conf import include
 
 
-from members.views import index_page, dashboard_page, account_page, register, webhook, newsletter, beginners_course, beginners_success, dashboard_redirect
+from members.views import index_page, dashboard_page, register, webhook, newsletter, beginners_course, beginners_success, dashboard_redirect, flyer
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,9 +37,10 @@ urlpatterns = [
     path('password-reset-complete/', PasswordResetCompleteView.as_view(), name="password_reset_complete"),
     path('membership/', include('members.urls')),
     path('checkin/', include('checkins.urls')),
-    path('account/', account_page, name="account_page"),
     path('webhook/', webhook, name='webhook'),
     path('newsletter/', newsletter, name='newsletter'),
     path('beginners-course/', beginners_course, name="beginners_course"),
-    path('beginners-course/success/', beginners_success, name="beginners_success")
+    path('beginners-course/success/', beginners_success, name="beginners_success"),
+    path('flyer/', flyer, name='flyer'),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

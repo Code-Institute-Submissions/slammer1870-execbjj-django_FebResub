@@ -447,6 +447,6 @@ def create_customer_portal(request):
     )
     return redirect(session.url)
 
+def flyer(request):
+    return redirect("index_page")
 
-def account_page(request):
-    return True
