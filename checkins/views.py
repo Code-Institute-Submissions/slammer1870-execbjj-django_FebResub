@@ -33,9 +33,9 @@ def check_in(request):
             #check if user has an active booking
             bookings = Attendee.objects.filter(user=request.user, lesson__time__gte=timezone.localtime())
 
-            if bookings.exists():
-                messages.warning(request, "You already have an active booking, you can only check into one class at a time!")
-                return redirect('dashboard_page', lesson.schedule.date)
+            #if bookings.exists():
+            #    messages.warning(request, "You already have an active booking, you can only check into one class at a time!")
+            #    return redirect('dashboard_page', lesson.schedule.date)
             
             #create new attendee instance with request.User
             attendee = Attendee(user=request.user)
