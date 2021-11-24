@@ -178,7 +178,7 @@
       <h3 class="text-2xl font-medium mb-4 uppercase">Technique of the Week</h3>
       <div style="padding: 56.25% 0 0 0; position: relative">
         <iframe
-          src="https://player.vimeo.com/video/525068314?h=867d29f103&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+          src="https://player.vimeo.com/video/518125084?h=e0f2595911&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
           frameborder="0"
           allow="autoplay; fullscreen; picture-in-picture"
           allowfullscreen
@@ -194,6 +194,7 @@
       {% if membership != None %}
       <div class="flex flex-wrap -m-4 mb-4">
         <div class="p-4 w-full">
+        
           <div
             class="
               h-full
@@ -203,7 +204,11 @@
               relative
               overflow-hidden
             "
-          >
+          > {% if membership.slug == "beginners-course" %}
+          <span class="text-xs text-red-500 mb-4 font-medium">
+          Your current subscription is due to expire soon, please consider upgrading to a membership.
+          </span>
+          {% endif %}
             <h2
               class="
                 text-sm
