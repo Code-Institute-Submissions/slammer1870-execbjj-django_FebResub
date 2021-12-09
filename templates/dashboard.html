@@ -7,6 +7,8 @@
     Hi {{user.first_name}}, welcome to your dashboard, all of your membership information and class check
     ins can be found here!
   </p>
+  {% comment %}
+  {% # Conditional rendering alert for beginners course expiry notification  %}
   {% if membership.slug == "beginners-course" %}
     <div
       class="
@@ -21,6 +23,7 @@
         Oh! It looks like your subscription is about to expire on 27/11/20 at 12:00pm. Check out the "My Membership" section below to upgrade to a membership and continue being able to check into class!
       </div>
     {% endif %}
+  {% endcomment %}
   <div class="bg-yellow-100 w-full p-4">
     <div class="flex items-center justify-between text-xs md:text-base lg:text-xl">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 md:h-8 w-auto" viewBox="0 0 71 55" fill="none">
