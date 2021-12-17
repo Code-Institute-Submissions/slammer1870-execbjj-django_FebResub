@@ -81,19 +81,15 @@ Sam Mc Nally
 
 
 ## Project Overview
-This site is design with a landing page for lead capturing as well as a user message board for authenticated users. Users can create an account, login, post messages on the message board, edit and delete this messages as well as being able to sign up for newsletter updates and sumbit queries through a contact form. 
+This site is design with a landing page for lead capturing and studio infomration as well as a dashboard for authenticated users. Users can create an account, login, manage their subscriptions, check in for classes, cancel their appointments as well as being able to sign up for newsletter updates and sumbit queries through a contact form. 
 
 ## HOW TO USE
 To use this website the steps are as follows.
 
 - Step 1: Login users login by navigating to the "/login" route, if user does not have an account they can login by clicking the "Click here to register" link on the login form.\
-![image](https://user-images.githubusercontent.com/42610577/133413663-9bf0bf65-2737-40b0-941c-51a9026b6b35.png)
-- Step 2: Once logged in a user will be redirected to the dashboard, a success message will flash to say that they have logged in.\
-![image](https://user-images.githubusercontent.com/42610577/133413946-2b3e6f16-88ca-4990-b2a1-05218e03000c.png)
-- Step 3: Users can create posts by filling this the create post form. Each post object has the property of "Owner" set to the user by default to allow for permission controls so that only the owner of a post can edit of delete it.\
-![image](https://user-images.githubusercontent.com/42610577/133414066-3b644c07-dad5-491e-a08a-25c5e9965430.png)
-- Step 4: Users can edit or delete their posts by clicking on the edit or delete buttons that show up on the posts they own. All of a users posts are shown in the "My Posts" section if they scroll down past the message form.\
-![image](https://user-images.githubusercontent.com/42610577/133422675-2dab0d0a-0a1a-4cc4-899b-41e921e93694.png)
+![image](https://user-images.githubusercontent.com/42610577/146531896-2c890de6-d19e-4312-94c9-85fb1a3fb1e6.png)- Step 2: Once logged in a user will be redirected to the dashboard.\
+![image](https://user-images.githubusercontent.com/42610577/146532342-f9fd4d38-387f-4972-a860-9f4d64ce5855.png)- Step 3: Users can manage their memberships from here, view the technique of the week as well as check into classes.\
+![image](https://user-images.githubusercontent.com/42610577/146532528-c0341553-b797-4175-b1dc-d504de63a1d0.png)
 
 ### Unauthenticated User
 Unauthenticated Users can access the landing page, login page and registration page. The site is built with access controls to stop unauthenticated users from accessing the dashboard as well as posting, post editing and post deleting functionality.
