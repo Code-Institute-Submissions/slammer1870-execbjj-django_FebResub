@@ -76,6 +76,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_extensions',
+
     "crispy_forms",
     "crispy_tailwind",
 
@@ -205,6 +207,11 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
+
 
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -219,4 +226,4 @@ if not DEBUG:
     X_FRAME_OPTIONS = "DENY"
 
     ALLOWED_HOSTS = ["execbjj-django.herokuapp.com",
-                     "execbjj.com", "www.execbjj.com", "test.execbjj.com", "*"]
+                     "execbjj.com", "www.execbjj.com", "test.execbjj.com"]
