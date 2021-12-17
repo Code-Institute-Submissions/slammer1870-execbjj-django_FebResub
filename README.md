@@ -184,6 +184,68 @@ Dashboard.\
 
 # Information Architecture
 
+The functionality of the application is very simple. When a user signs up they are assigned a Stripe customer id via a Django signal.
+
+```
+# Receiver to create customer in Stripe and assing their StripeID to the CustomUser object
+
+
+@receiver(post_save, sender=CustomUser)
+def create_stripe_id(sender, instance, **kwargs):
+
+    name = str("{0} {1}").format(instance.first_name, instance.last_name)
+
+    if instance.stripe_customer_id == None:
+
+        stripe_customer = stripe.Customer.create(
+            name=name,
+            email=instance.email
+        )
+
+        instance.stripe_customer_id = stripe_customer["id"]
+
+        post_save.disconnect(create_stripe_id, sender=CustomUser)
+        instance.save()
+        post_save.connect(create_stripe_id, sender=CustomUser)
+```
+
+This Stripe ID is then used for all user interactions with Stripe.
+
+The business logic for completed payments are handled in the payment success view, this view can handle both individual product purchases as well as subscriptions
+
+```
+@login_required
+def success_view(request):
+
+    # Gets sessionID from URL parameters
+    session_id = request.GET.get("session_id")
+
+    # Gets line item from checkout session
+    line_item = stripe.checkout.Session.list_line_items(session_id, limit=1)
+
+    # Retrieves checkout session object
+    checkout_session = stripe.checkout.Session.retrieve(session_id)
+
+    if checkout_session['subscription']:
+        sub_id = checkout_session['subscription']
+    else:
+        sub_id = ""
+
+    # Creates new subscription with request user, priceID from line item (only works with one line item), subscriptionID from checkout session and sets status to active
+    subscription, created = Subscription.objects.update_or_create(user=request.user, defaults={'membership': Membership.objects.get(
+        stripe_price_id=line_item.data[0].price.id), 'stripe_subscription_id': sub_id, 'status': "active"})
+    subscription.save()
+
+    messages.success(request, "Thank for you subscribing!")
+
+    return redirect('dashboard_redirect')
+
+```
+
+Updating and deleting subscriptions is handled by a webhook that is sent to the "/webhook" endpoint.
+
+Check ins verify that the user has an active subscription before allowing the function to execute.
+
 ## Database Choice
 Postgres
 
