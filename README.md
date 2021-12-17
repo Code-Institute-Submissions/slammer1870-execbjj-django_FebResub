@@ -92,69 +92,23 @@ To use this website the steps are as follows.
 ![image](https://user-images.githubusercontent.com/42610577/146532528-c0341553-b797-4175-b1dc-d504de63a1d0.png)
 
 ### Unauthenticated User
-Unauthenticated Users can access the landing page, login page and registration page. The site is built with access controls to stop unauthenticated users from accessing the dashboard as well as posting, post editing and post deleting functionality.
-- A login Flask decorator is used to check that if the session object does not contain the property of logged in, the user will be redirected to a login page.
-
-``` def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'logged_in' not in session:
-            flash("You must be logged in to access", "bg-red-400")
-            return redirect(url_for('login', next=request.url))
-        return f(*args, **kwargs)
-    return decorated_function
-```
+Unauthenticated Users can access the landing page, login page and registration page. The site is built with access controls to stop unauthenticated users from accessing the dashboard.
 
 ### Standard User
-- A standard user can make posts to the message board. By default, each post object has the property of "Owner" set to the user by default to allow for permission controls so that only the owner of a post can edit of delete it.
-
-When a new user is created the user property in the session object is assigned as the value of "Owner.
-
-``` class Post:
-    def create(self, form):
-        post = {
-        "_id": uuid.uuid4().hex,
-        "owner": session['user'],
-        "date": datetime.now(),
-        "post": form.post.data
-        }
-
-        db.posts.insert_one(post)
-        return True
-```
-        
-Permission controls at the route level are then implemented to limit editing and deleting to that of the post owner.
-
-``` @app.route('/posts/edit/<string:id>', methods=['GET', 'POST'])
-@login_required
-def edit(id):
-    form = PostForm(request.form)
-    post = db.posts.find_one({"_id": id})
-    if session['user']['_id'] == post['owner']['_id']:
-        form.post.data = post['post']
-        if request.method == "POST" and form.validate():
-            post = Post()
-            new_form = PostForm(request.form)
-            post.edit(id, new_form)
-            flash("Post has been updated", "bg-yellow-400")
-            return redirect(url_for('dashboard'))
-        return render_template("edit_post.html", form=form)
-    flash("Permission denied, you must be the owner of this post to edit", "bg-yellow-400")
-    return redirect(url_for('dashboard'))
-```
+- A standard user can manage their own membership including creating, updating, deleing and check in to classes/cancel their bookings.
 
 ### Admin User
-- Currently there is no permission restricted only to admin users via the interface of the website.
+- Currently there is no permission restricted only to admin users via the interface of the website. Admin controls are managed through the Django admin dashboard.
 
 ## UX
-As this is a CRUD based application the key UX features for this site are clear and defined input for accessability. Examples of this can be seen on the edit and delete buttons for posts.\
-![image](https://user-images.githubusercontent.com/42610577/133416933-fef1c338-7447-4de6-8aa0-adac275e7bd1.png)
+As this is a CRUD based application the key UX features for this site are clear and defined input for accessability. Examples of this can be seen on the chck in and cancel buttons for bookings.\
+![image](https://user-images.githubusercontent.com/42610577/146533066-636dc623-e826-4723-9759-23051af327d5.png)
 
 ### Strategy
 The strategy behind this website is to use of for a company that I own that is in the process of opening back up after being shut for over a year.
 
 ### Project Goals
-The goal of this project is to deliver a simple, user friendly and intuitive application that allows user to create, read, update and delete message postings limited to 180 characters.
+The goal of this project is to deliver a simple, user friendly and intuitive application that allows user to create and manage subscriptions and check into classes
 
 #### User Goals
 As a user I want to have a clear and intuitive experience through out the application with consisten visual feedback in the form of flashed messages as I interact with the website.
@@ -163,11 +117,11 @@ As a user I want to have a clear and intuitive experience through out the applic
 As a developer I aim to produce an CRUD application with User Authentication as well as a defensive programming design strategy to ensure that user's data is protected.
 
 #### Website Owner Goals
-As a product owner I aim to have a piece of software that is built with clean foundational architecture that provides for the ability to add more directly monetisable features like premium membership content a payment integrations into the site in the near future.
+As a product owner I aim to have a piece of software that is built with clean foundational architecture that provides for the ability to add more directly monetisable features like premium membership content and payment integrations into the site.
 
 
 ### User Stories
-As a User I want to be able to sign up to a newsletter, submit queries via a contact form, create an account, login, make posts, edit posts, delete posts.
+As a User I want to be able to sign up to a newsletter, submit queries via a contact form, create an account, login, manage my mebership and check into classes.
 
 
 ### Design Choices
