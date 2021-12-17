@@ -141,15 +141,13 @@ The images used are all relating to the activities of the company. They are most
 #### Design Elements
 
 Forms.\
-![image](https://user-images.githubusercontent.com/42610577/133421600-c847bf60-a61a-4e50-9efe-48909b2d5563.png)
+![image](https://user-images.githubusercontent.com/42610577/146533821-2edeeee5-401d-46d2-9d06-78e97e7af6b8.png)
 
 Input Buttons.\
-![image](https://user-images.githubusercontent.com/42610577/133421767-1c1e08df-602c-4b66-aec0-11bc2ef7ef14.png)
-![image](https://user-images.githubusercontent.com/42610577/133416933-fef1c338-7447-4de6-8aa0-adac275e7bd1.png)
+![image](https://user-images.githubusercontent.com/42610577/146533066-636dc623-e826-4723-9759-23051af327d5.png)
 
 Cards.\
-![image](https://user-images.githubusercontent.com/42610577/133421909-4859cdd9-ab79-4dda-ba73-dcc03479b64f.png)
-
+![image](https://user-images.githubusercontent.com/42610577/146533923-bf27f8d6-9a1f-4272-857c-1c51d12c67fb.png)
 
 #### Custom Javascript
 There is a timeout function on the alert messages so that the dissapear after 5 seconds.
@@ -165,8 +163,7 @@ There is a timeout function on the alert messages so that the dissapear after 5 
 ### Wireframes
 
 I built full mobile and desktop mockups using Adobe XD.\
-![image](https://user-images.githubusercontent.com/42610577/133422184-ef3cb867-7ee6-4a68-8f64-f924d112ab0e.png)
-
+![image](https://user-images.githubusercontent.com/42610577/146534177-d4410e02-7792-4337-b6ab-243eead89f1f.png)
 
 ### Features
 Lead capture form.\
@@ -181,31 +178,15 @@ Login page.\
 Registration page.\
 ![image](https://user-images.githubusercontent.com/42610577/133422519-a8c4ce11-0085-4230-8c24-cd24d763f13f.png)
 
-Dashboard with post form.\
-![image](https://user-images.githubusercontent.com/42610577/133422600-286dce18-91b8-41f4-a483-03100506b733.png)
-
-User's posts section.\
-![image](https://user-images.githubusercontent.com/42610577/133422675-2dab0d0a-0a1a-4cc4-899b-41e921e93694.png)
-
-
-#### Future Features
-
-In the future I want to integrate payment for premium membership options.
+Dashboard.\
+![image](https://user-images.githubusercontent.com/42610577/146532342-f9fd4d38-387f-4972-a860-9f4d64ce5855.png)
 
 
 # Information Architecture
 ![image](https://user-images.githubusercontent.com/42610577/133450291-1eb75c9a-2f4e-45d1-ac2b-9628ddab542d.png)
 
 ## Database Choice
-MongoDB Atlas was user for both production and local development.
-
-PyMongo was used to connect to the MongoDB database.
-
-```
-# Database
-client = pymongo.MongoClient(os.environ.get("MONGO_URI"))
-db = client[str(os.environ.get("DB_NAME"))] 
-```
+Postgres
 
 ### Data Models
 The two data models are User and Post
@@ -240,6 +221,7 @@ The models inputs are validated through WTForms.
   - [Mailchimp](https://mailchimp.com/) - An email marketing platform
   - [Sendgrid](https://sendgrid.com/) - An email delivery API
   - [MongoDB](https://www.mongodb.com/cloud/atlas)- a fully-managed cloud database used to store manage and query data sets
+  - [Stripe](https://stripe.com/) - Payments Integration Software
   
 
 ## Programming Languages
@@ -247,8 +229,7 @@ The models inputs are validated through WTForms.
 - [CSS3](https://www.w3schools.com/w3css/default.asp) - used to style DOM appearance. 
 - [HTML5](https://www.w3schools.com/html/default.asp) -  used to define DOM elements. 
 - [JavaScript](https://www.javascript.com/)  -  used to help handle challenge member entry.
-- [Python](https://www.python.org/) the project back-end functions are written using Python. Django and Python is used to build route functions.
-- [Flask](https://flask-doc.readthedocs.io/en/latest/) - python based templating language
+- [Django](https://www.djangoproject.com/) - Python Framework
 - [Markdown](https://www.markdownguide.org/) Documentation within the readme was generated using markdown
 
 ## Fonts
@@ -262,6 +243,8 @@ The models inputs are validated through WTForms.
 ## APIs
  - [Mailchimp Marekting API](https://mailchimp.com/developer/marketing/api/)
  - [Twillo Sendgrid](https://www.twilio.com/sendgrid/email-api)
+ - [Stripe](https://stripe.com/) - Payments Integration Software used to handle subscriptions
+
 
 
 # Defensive Programming
