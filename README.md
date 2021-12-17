@@ -189,29 +189,8 @@ Dashboard.\
 Postgres
 
 ### Data Models
-The two data models are User and Post
+![image](https://user-images.githubusercontent.com/42610577/146538482-3c5893ae-0862-480d-999d-971e8f85c8f0.png)
 
-User:
-``` 
-user = {
-        "_id": uuid.uuid4().hex,
-        "name": form.name.data,
-        "email": form.email.data,
-        "password": form.password.data
-        }
-```
-
-Post:
-``` 
-post = {
-        "_id": uuid.uuid4().hex,
-        "owner": session['user'], #foreignkey to current logged in user
-        "date": datetime.now(),
-        "post": form.post.data
-        }
-```
-
-The models inputs are validated through WTForms.
 
 # Technologies Used
 
@@ -220,7 +199,6 @@ The models inputs are validated through WTForms.
   - [Alpine JS](https://alpinejs.dev/) - A lightweight Javascript Framework
   - [Mailchimp](https://mailchimp.com/) - An email marketing platform
   - [Sendgrid](https://sendgrid.com/) - An email delivery API
-  - [MongoDB](https://www.mongodb.com/cloud/atlas)- a fully-managed cloud database used to store manage and query data sets
   - [Stripe](https://stripe.com/) - Payments Integration Software
   
 
@@ -246,49 +224,6 @@ The models inputs are validated through WTForms.
  - [Stripe](https://stripe.com/) - Payments Integration Software used to handle subscriptions
 
 
-
-# Defensive Programming
-The app is built with defensive programming in mind.
-
-Some of the key features are built for access controls and permission roles.
-
-### Access Controls
-Unauthenticated Users can access the landing page, login page and registration page. The site is built with access controls to stop unauthenticated users from accessing the dashboard as well as posting, post editing and post deleting functionality.
-- A login Flask decorator is used to check that if the session object does not contain the property of logged in, the user will be redirected to a login page.
-
-``` def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'logged_in' not in session:
-            flash("You must be logged in to access", "bg-red-400")
-            return redirect(url_for('login', next=request.url))
-        return f(*args, **kwargs)
-    return decorated_function
-```
-
-### Permission Roles
-Posts are assigned an owner by default on creating. The owner property is assigned from the User of the current session.
-
-Role based permissions at the route level are implemented to limit editing and deleting to that of the post owner.
-
-``` @app.route('/posts/edit/<string:id>', methods=['GET', 'POST'])
-@login_required
-def edit(id):
-    form = PostForm(request.form)
-    post = db.posts.find_one({"_id": id})
-    if session['user']['_id'] == post['owner']['_id']: #Check to ensure that the current user is in fact the post owner
-        form.post.data = post['post']
-        if request.method == "POST" and form.validate():
-            post = Post()
-            new_form = PostForm(request.form)
-            post.edit(id, new_form)
-            flash("Post has been updated", "bg-yellow-400")
-            return redirect(url_for('dashboard'))
-        return render_template("edit_post.html", form=form)
-    flash("Permission denied, you must be the owner of this post to edit", "bg-yellow-400")
-    return redirect(url_for('dashboard'))
-```
-
 ## Testing
 
 ### Penetration Testing
@@ -296,21 +231,11 @@ Basic penetration testing was done to ensure that unauthenticated users can't ac
 
 #### Testing Authenticated Routes
     1. Without logging in attempt to access the url "/dashboard"
-    2. Using Postman try to send a POST request to the endpoint "/posts/create/"
-    3. Try to access the route "/posts/edit/<id of any post>"
+    2. Using Postman try to send a POST request to the endpoint "/checkin/"
     
 #### Result
 User is redirected to the login page with the dashboard url set as the value of the "next" paramater in the current url - ***passed*** \
-A response telling the user the log in is returned - ***passed*** \
-A response telling the user the log in is returned - ***passed*** 
-
-#### Testing Role Based Permissions
-    1. Using the post ID of a post not owned the current authenticated user by try to access "/posts/edit/<id of post not owned by current user>"
-    2. Using the post ID of a post not owned the current authenticated user by try to access "/posts/delete/<id of post not owned by current user>"
-  
-#### Result
-User is redirected to Dashboard and message saying permission denied is displayed - ***passed*** \
-User is redirected to Dashboard and message saying permission denied is displayed - ***passed*** 
+A response telling the user they are unauthenticated is returned - ***passed*** \
 
 ### Validation Testing
 
@@ -402,25 +327,18 @@ Much of the app has been tested manually as follows:
 * Button brings you to the edit page with the post content prefilled in the form - ***passed***
 * Form returns success message that post was deleted - ***passed***
 
-#### 6. Post Edit Functionality:
-    1. Go to the Post Edit page.
-    2. Try to submit the empty form and verify that an error message about the required fields appears.
-    3. Try to submit the form with too many characters that a relevant error message appears.
-    5. Try to submit the form with all inputs valid and verify that a success message appears.
-
-##### Results
-* Post Edit Loads - ***passed***
-* Form return visual feedback for required fields - ***passed***
-* Form requests message saying character limit is 180 charaters - ***passed***
-* Form returns success message - ***passed***
-
-#### 7. Post Delete Functionality:
+#### 6. Check In Functionality:
     1. Go to the Dashboard page.
-    2. Try to Delete a post
+    2. Try to checkin without an active membership.
+    3. Try to checkin with an active membership.
+    4. Try to cancel booking
 
 ##### Results
-* Dashboard Page loads - ***passed***
-* Page returns message stating that post was deleted - ***passed***
+* Dashbuard Loads - ***passed***
+* A message flashed saying a user needs an active membership to check in - ***passed***
+* User is checked in and a message appears - ***passed***
+* User is brought to confimration page and can cancel booking - ***passed***
+
 
 #### 8. Logout Functionality:
     1. Click logout button.
@@ -431,12 +349,10 @@ Much of the app has been tested manually as follows:
 #### 9. Conditional Rendering:
     1. As an unauthenitaced user check that navbar only displays Log In Button.
     2. As an authenitaced user check that navbar  displays Dashboard and Log Out Button.
-    3. Only an Onwer of a post can see Edit and Delete buttons on posts
  
 ##### Results
 * Log In Button appears in navbar but not Dashboard or Log Out Buttons - ***passed***
 * Dashboard and Log Out Buttons appears in navbar but not Log In Button - ***passed***
-* Post card only show Edit and Delete buttons for post owner - ***passed***
 
 ### Defect Tracking
 
@@ -451,7 +367,7 @@ To deploy locally:
 
 1. In the terminal run the command
 ``` 
-git clone https://github.com/slammer1870/studious-lamp.git 
+git clone https://github.com/slammer1870/execbjj-django.git 
 ```
 2. In the root directory create your virtual environment and run
 ```
@@ -460,42 +376,21 @@ pip install -r requirements.txt
 3. Create a .env file with the environemnt variables:\
 > |        Variable       	|   Setting  	|
 >|:---------------------:	|:----------:	|
->| MONGO_URI                | YOUR_KEY   	|
->| DB_NAME            	    | YOUR_KEY   	|
+>| DATABASE_URL                | YOUR_KEY   	|
 >| SECRET_KEY        	    | YOUR_KEY   	|
 >| MAILCHIMP_API_KEY        | YOUR_KEY    	|
 >| MAILCHIMP_SERVER 	    | YOUR_KEY  	|
 >| MAILCHIMP_LIST_ID        | 5000       	|
 >| SECRET_KEY            	| YOUR_KEY  	|
 >| SENDGRID_API_KEY    	    | YOUR_KEY  	|
+>| STRIPE_API_KEY    	    | YOUR_KEY  	|
+>| STRIPE_WEBHOOK_SECRET    	    | YOUR_KEY  	|
+>| DEFAULT_FROM_EMAIL    	    | YOUR_KEY  	|
 
-4. Go to Project Root>Auth>Routes.py and change:
-```
-from app import app
-```
-to
-```
-from __main__ import app
-```
-5. Go to Project Root>Posts>Routes.py and change:
-```
-from app import app
-```
-to
-```
-from __main__ import app
-```
-6. Go to Project Root>Newsletter>Routes.py and change:
-```
-from app import app
-```
-to
-```
-from __main__ import app
 ```
 7. Run
 ```
-python app.py
+READ_DOT_ENV_FILE=True python manage.py runserver
 ```
 
 ### Deploy To Heroku
@@ -510,14 +405,16 @@ git clone https://github.com/slammer1870/studious-lamp.git
 4. Set the config variables to be:
 > |        Variable       	|   Setting  	|
 >|:---------------------:	|:----------:	|
->| MONGO_URI                | YOUR_KEY   	|
->| DB_NAME            	    | YOUR_KEY   	|
+>| DATABASE_URL                | YOUR_KEY   	|
 >| SECRET_KEY        	    | YOUR_KEY   	|
 >| MAILCHIMP_API_KEY        | YOUR_KEY    	|
 >| MAILCHIMP_SERVER 	    | YOUR_KEY  	|
 >| MAILCHIMP_LIST_ID        | 5000       	|
 >| SECRET_KEY            	| YOUR_KEY  	|
 >| SENDGRID_API_KEY    	    | YOUR_KEY  	|
+>| STRIPE_API_KEY    	    | YOUR_KEY  	|
+>| STRIPE_WEBHOOK_SECRET    	    | YOUR_KEY  	|
+>| DEFAULT_FROM_EMAIL    	    | YOUR_KEY  	|
 5. Log in to Heroku, you can do this by running
 ```
 heroku login
@@ -534,7 +431,7 @@ $ git push heroku main
 ```
 
 ## Credits
-The footer component was bootstrapped from [tailblocks.cc](https://tailblocks.cc/)
+The footer component, map and timetable was bootstrapped from [tailblocks.cc](https://tailblocks.cc/)
 
 ### Content
 All of the copy on the website is written by me
