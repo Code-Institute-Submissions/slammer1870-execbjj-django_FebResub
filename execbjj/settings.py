@@ -219,4 +219,4 @@ if not DEBUG:
     X_FRAME_OPTIONS = "DENY"
 
     ALLOWED_HOSTS = ["execbjj-django.herokuapp.com",
-                     "execbjj.com", "www.execbjj.com", "test.execbjj.com"]
+                     "execbjj.com", "www.execbjj.com", "test.execbjj.com", "*"]
