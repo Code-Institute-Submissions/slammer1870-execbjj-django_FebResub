@@ -183,7 +183,6 @@ Dashboard.\
 
 
 # Information Architecture
-![image](https://user-images.githubusercontent.com/42610577/133450291-1eb75c9a-2f4e-45d1-ac2b-9628ddab542d.png)
 
 ## Database Choice
 Postgres
