@@ -17,7 +17,7 @@ class Lesson(models.Model):
 
     @property
     def remaining(self):
-        #NB Class size is hard coded to 20
+        # Class size is hard coded to 20
         amount = 20 - len(self.attendee_set.all())
         return amount
 

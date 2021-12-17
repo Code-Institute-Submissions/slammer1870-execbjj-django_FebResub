@@ -32,7 +32,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
 def index_page(request):
-    #messages.success(request, "Hey")
+    # messages.success(request, "Hey")
 
     newsletter_form = NewsletterForm()
     contact_form = ContactForm()
@@ -348,27 +348,33 @@ def check_in(request):
     return redirect('dashboard_page')
 
 
+endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+
 @csrf_exempt
 def webhook(request):
     # You can use webhooks to receive information about asynchronous payment events.
     # For more about our webhook events check out https://stripe.com/docs/webhooks.
-    #webhook_secret = settings.STRIPE_WEBHOOK_SECRET
-    webhook_secret = settings.STRIPE_WEBHOOK_SECRET
-
+    # webhook_secret = settings.STRIPE_WEBHOOK_SECRET
     payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event_type = None
 
-    # Retrieve the event by verifying the signature using the raw body and secret if webhook signing is configured.
-    signature = request.META["HTTP_STRIPE_SIGNATURE"]
     try:
-        event = stripe.Event.construct_from(
-            json.loads(payload), stripe.api_key
+        event_type = stripe.Webhook.construct_event(
+        payload, sig_header, endpoint_secret
         )
-        data = event['data']
-    except Exception as e:
-        return e
-
+        data = event_type['data']
+    except ValueError as e:
+        # Invalid payload
+        print(e)
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        print(e)
+        return HttpResponse(status=400)
+    
     # Get the type of webhook event sent - used to check the status of PaymentIntents.
-    event_type = event['type']
+    event_type = event_type['type']
     data_object = data['object']
 
     '''if event_type == 'payment_intent.succeeded':
@@ -391,7 +397,7 @@ def webhook(request):
         user = CustomUser.objects.get(stripe_customer_id=stripe_customer_id)
         
         subscription = Subscription.objects.get(user=user)
-        #subscription.status = stripe_sub["status"]
+        # subscription.status = stripe_sub["status"]
         subscription.stripe_subscription_id = webhook_object["id"]
         subscription.membership = membership
         subscription.save()'''
@@ -444,7 +450,7 @@ def create_customer_portal(request):
 
     session = stripe.billing_portal.Session.create(
         customer=request.user.stripe_customer_id,
-        return_url="http://execbjj.com/dashboard",
+        return_url=request.META['HTTP_REFERER'],
     )
     return redirect(session.url)
 
