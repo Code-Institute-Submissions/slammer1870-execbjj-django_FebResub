@@ -76,8 +76,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'django_extensions',
-
     "crispy_forms",
     "crispy_tailwind",
 
@@ -206,11 +204,6 @@ EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
-
-GRAPH_MODELS = {
-  'all_applications': True,
-  'group_models': True,
-}
 
 
 if not DEBUG:
