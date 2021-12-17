@@ -451,6 +451,7 @@ pip install -r requirements.txt
 
 ```
 7. Run
+
 ```
 READ_DOT_ENV_FILE=True python manage.py runserver
 ```
