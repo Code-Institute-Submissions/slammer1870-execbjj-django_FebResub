@@ -284,8 +284,7 @@ Postgres
 ## APIs
  - [Mailchimp Marekting API](https://mailchimp.com/developer/marketing/api/)
  - [Twillo Sendgrid](https://www.twilio.com/sendgrid/email-api)
- - [Stripe](https://stripe.com/) - Payments Integration Software used to handle subscriptions
-
+ - [Stripe](https://stripe.com/)
 
 ## Testing
 
