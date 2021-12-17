@@ -209,7 +209,7 @@ def create_stripe_id(sender, instance, **kwargs):
         post_save.connect(create_stripe_id, sender=CustomUser)
 ```
 
-This Stripe ID is then used for all user interactions with Stripe.
+This Stripe ID is then used for all user interactions with Stripe. A Stripe product ID is assigned to each product that is then used to reference in Stripe.
 
 The business logic for completed payments are handled in the payment success view, this view can handle both individual product purchases as well as subscriptions
 
