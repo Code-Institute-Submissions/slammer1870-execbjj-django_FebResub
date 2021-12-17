@@ -2,7 +2,7 @@
 ![image](https://user-images.githubusercontent.com/42610577/133406469-cfa248d1-02d7-4d19-b337-c19859cc5578.png)
 [ExecBJJ - View The Live Deployed Website](https://execbjj-django-preprod.herokuapp.com/)
 
-*This is software that is actively used in production, linked above the the preproduction environment
+*This is software that is actively used in production, linked above the the preproduction environment. Please see the pre-production branch for project code
 
 # Table of Contents
 - [ExecBJJ Website](#execbjj-website)
