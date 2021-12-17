@@ -350,6 +350,7 @@ def check_in(request):
 
 endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
 
+
 @csrf_exempt
 def webhook(request):
     # You can use webhooks to receive information about asynchronous payment events.
@@ -361,7 +362,7 @@ def webhook(request):
 
     try:
         event_type = stripe.Webhook.construct_event(
-        payload, sig_header, endpoint_secret
+            payload, sig_header, endpoint_secret
         )
         data = event_type['data']
     except ValueError as e:
@@ -372,35 +373,10 @@ def webhook(request):
         # Invalid signature
         print(e)
         return HttpResponse(status=400)
-    
+
     # Get the type of webhook event sent - used to check the status of PaymentIntents.
     event_type = event_type['type']
     data_object = data['object']
-
-    '''if event_type == 'payment_intent.succeeded':
-        # Used to provision services after the trial has ended.
-        # The status of the invoice will show up as paid. Store the status in your
-        # database to reference when a user accesses your service to avoid hitting rate
-        # limits.
-        # TODO: change the users subscription and pricing
-
-        webhook_object = data["object"]
-        stripe_customer_id = webhook_object["customer"]
-
-        print(webhook_object)
-
-        stripe_sub = stripe.Subscription.retrieve(webhook_object["subscription"])
-        stripe_price_id = stripe_sub["plan"]["id"]
-
-        membership = Membership.objects.get(stripe_price_id=stripe_price_id)
-
-        user = CustomUser.objects.get(stripe_customer_id=stripe_customer_id)
-        
-        subscription = Subscription.objects.get(user=user)
-        # subscription.status = stripe_sub["status"]
-        subscription.stripe_subscription_id = webhook_object["id"]
-        subscription.membership = membership
-        subscription.save()'''
 
     if event_type == 'customer.subscription.updated':
         # Used to provision services after the trial has ended.
@@ -454,6 +430,7 @@ def create_customer_portal(request):
     )
     return redirect(session.url)
 
+
 def flyer(request):
     headers = {
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36 OPR/71.0.3770.284',
@@ -463,7 +440,7 @@ def flyer(request):
 
     data = '{"name":"flyerview","url":"http://execbjj.com","domain":"execbjj.com","width":1666}'
 
-    response = requests.post('https://plausible.io/api/event', headers=headers, data=data)
+    response = requests.post(
+        'https://plausible.io/api/event', headers=headers, data=data)
 
     return redirect("index_page")
-

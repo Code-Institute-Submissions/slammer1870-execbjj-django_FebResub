@@ -18,12 +18,12 @@ from django.contrib.messages import constants as messages
 
 
 MESSAGE_TAGS = {
-        messages.DEBUG: 'bg-purple-400',
-        messages.INFO: 'bg-indigo-400',
-        messages.SUCCESS: 'bg-green-400',
-        messages.WARNING: 'bg-yellow-400',
-        messages.ERROR: 'bg-red-400',
- }
+    messages.DEBUG: 'bg-purple-400',
+    messages.INFO: 'bg-indigo-400',
+    messages.SUCCESS: 'bg-green-400',
+    messages.WARNING: 'bg-yellow-400',
+    messages.ERROR: 'bg-red-400',
+}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -59,7 +59,7 @@ MAILCHIMP_API_KEY = env('MAILCHIMP_API_KEY')
 MAILCHIMP_SERVER = env('MAILCHIMP_SERVER')
 MAILCHIMP_LIST_ID = env('MAILCHIMP_LIST_ID')
 
-SENDGRID_API_KEY= env('SENDGRID_API_KEY')
+SENDGRID_API_KEY = env('SENDGRID_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -103,7 +103,7 @@ ROOT_URLCONF = 'execbjj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,11 +125,11 @@ WSGI_APPLICATION = 'execbjj.wsgi.application'
 
 if DEBUG:
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'db.sqlite3',
+        }
     }
-}
 else:
     DATABASES = {
         'default': dj_database_url.parse(env('DATABASE_URL'))
@@ -199,7 +199,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SENDGRID_API_KEY = env('SENDGRID_API_KEY')
 
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
+EMAIL_HOST_USER = 'apikey'  # this is exactly the value 'apikey'
 EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -218,5 +218,5 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     X_FRAME_OPTIONS = "DENY"
 
-    ALLOWED_HOSTS = ["execbjj-django.herokuapp.com", "execbjj.com", "www.execbjj.com", "test.execbjj.com", "*"]
-
+    ALLOWED_HOSTS = ["execbjj-django.herokuapp.com",
+                     "execbjj.com", "www.execbjj.com", "test.execbjj.com", "*"]

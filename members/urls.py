@@ -3,7 +3,7 @@ from django.conf import settings
 
 from .views import MembershipSelectView, create_customer_portal, newsletter, success_view, check_in, newsletter, contact
 
-app_name="members"
+app_name = "members"
 
 urlpatterns = [
     path('', MembershipSelectView.as_view(), name="membership_page"),
