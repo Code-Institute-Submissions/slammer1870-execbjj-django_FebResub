@@ -269,7 +269,7 @@ def beginners_course(request):
                             'product_data': {
                                 'name': 'Intro to Brazilian Jiu Jitsu - 6 Week Course',
                             },
-                            'unit_amount': 18900,
+                            'unit_amount': 19900,
                             'currency': 'eur',
                         },
                         'quantity': 1,
