@@ -8,7 +8,7 @@ class Schedule(models.Model):
     def __str__(self):
         return str(self.date)
 
-CLASS_CHOICES = (("Gi Class", "GI"), ("NoGi Class","NOGI"), ("Open Mat","OPEN"))
+CLASS_CHOICES = (("Gi Class (Beginners)", "GI"), ("NoGi Class (Beginners)","NOGI"), ("Gi Class (Mixed Levels)", "GI"), ("NoGi Class (Mixed Levels)","NOGI"), ("Open Mat","OPEN"), ("Sparring Class","SPARRING"), ("Wrestling","WRESTLING"))
 
 class Lesson(models.Model):
     time = models.DateTimeField(unique=True)
