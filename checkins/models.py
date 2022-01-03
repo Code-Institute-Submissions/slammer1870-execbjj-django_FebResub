@@ -12,7 +12,7 @@ CLASS_CHOICES = (("Gi Class (Beginners)", "GI"), ("NoGi Class (Beginners)","NOGI
 
 class Lesson(models.Model):
     time = models.DateTimeField(unique=True)
-    class_type = models.CharField(choices=CLASS_CHOICES, max_length=12)
+    class_type = models.CharField(choices=CLASS_CHOICES, max_length=50)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
 
     @property
