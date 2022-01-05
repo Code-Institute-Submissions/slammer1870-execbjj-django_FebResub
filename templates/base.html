@@ -9,18 +9,28 @@
       name="description"
       content="ExecBJJ Studio - Learn Brazilian Jiu Jitsu"
     />
-    <link
-      rel="shortcut icon"
-      href="{% static 'favicon.png' %}"
-    />
+    <link rel="shortcut icon" href="{% static 'favicon.png' %}" />
     <!--Alpine JS Include-->
-    <script
-      src="https://unpkg.com/alpinejs@3.3.4/dist/cdn.min.js"
-    ></script>
+    <script src="https://unpkg.com/alpinejs@3.3.4/dist/cdn.min.js"></script>
     <!--Tailwind CSS Link-->
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            spacing: {
+              '128': '32rem',
+            }
+          }
+        }
+      }
+    </script>
     <!--Plausible Analytics Tag-->
-    <script defer data-domain="execbjj.com" src="https://plausible.io/js/plausible.js"></script>
+    <script
+      defer
+      data-domain="execbjj.com"
+      src="https://plausible.io/js/plausible.js"
+    ></script>
     <title>ExecBJJ</title>
   </head>
   {% include "navbar.html" %}
