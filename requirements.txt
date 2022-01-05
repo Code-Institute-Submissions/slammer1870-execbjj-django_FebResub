@@ -6,6 +6,7 @@ astroid==2.9.0
 attrs==21.4.0
 autopep8==1.6.0
 backcall==0.2.0
+backports.zoneinfo==0.2.1
 betterpath==0.2.2
 bleach==4.1.0
 certifi==2021.10.8
@@ -19,7 +20,7 @@ debugpy==1.5.1
 decorator==5.1.0
 defusedxml==0.7.1
 dj-database-url==0.5.0
-Django>=3.2.10
+Django==4.0.1
 django-crispy-forms==1.13.0
 django-environ==0.7.0
 django-extensions==3.1.5
