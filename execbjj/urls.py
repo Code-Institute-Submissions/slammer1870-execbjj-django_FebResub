@@ -45,6 +45,6 @@ urlpatterns = [
     #path('beginners-course/', beginners_course, name="beginners_course"),
     #path('beginners-course/success/', beginners_success, name="beginners_success"),
     path('flyer/', flyer, name='flyer'),
-    #path('videos/', include('videos.urls')),
+    path('videos/', include('video.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
