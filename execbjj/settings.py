@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     'members',
     'checkins',
     'video',
+
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
