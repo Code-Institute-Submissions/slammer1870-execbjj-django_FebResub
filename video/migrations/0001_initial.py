@@ -35,8 +35,8 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('category', models.CharField(max_length=50)),
-                ('difficulty', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.CASCADE, to='videos.difficulty')),
-                ('section', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.CASCADE, to='videos.section')),
+                ('difficulty', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.CASCADE, to='video.difficulty')),
+                ('section', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.CASCADE, to='video.section')),
             ],
         ),
     ]
