@@ -63,7 +63,7 @@ SENDGRID_API_KEY = env('SENDGRID_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -79,8 +79,12 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_tailwind",
 
+    "django_extensions",
+
     'members',
-    'checkins'
+    'checkins',
+    'video',
+
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"

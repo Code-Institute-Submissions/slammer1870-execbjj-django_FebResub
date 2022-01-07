@@ -35,15 +35,16 @@ urlpatterns = [
     path('password-reset-done/', PasswordResetDoneView.as_view(),
          name="password_reset_done"),
     path('password-reset-confirm/<uidb64>/<token>/',
-         PasswordResetConfirmView.as_view(template_name="registration/password_reset_form.html"), name="password_reset_confirm"),
+         PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path('password-reset-complete/', PasswordResetCompleteView.as_view(),
          name="password_reset_complete"),
     path('membership/', include('members.urls')),
     path('checkin/', include('checkins.urls')),
     path('webhook/', webhook, name='webhook'),
     path('newsletter/', newsletter, name='newsletter'),
-    path('beginners-course/', beginners_course, name="beginners_course"),
-    path('beginners-course/success/', beginners_success, name="beginners_success"),
+    #path('beginners-course/', beginners_course, name="beginners_course"),
+    #path('beginners-course/success/', beginners_success, name="beginners_success"),
     path('flyer/', flyer, name='flyer'),
-
+    path('videos/', include('video.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
