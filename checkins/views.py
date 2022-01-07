@@ -18,6 +18,7 @@ from checkins.models import Attendee, Lesson, Schedule
 from datetime import datetime, timedelta
 from django.utils import timezone
 
+
 @login_required
 def check_in(request):
 
@@ -26,21 +27,22 @@ def check_in(request):
         subscription = Subscription.objects.filter(user=request.user)
 
         if subscription.exists():
-            
-            #get lesson from form POST request
-            lesson = Lesson.objects.get(time=request.POST.get('lesson'))
-            
-            #check if user has an active booking
-            bookings = Attendee.objects.filter(user=request.user, lesson__time__gte=timezone.localtime())
 
-            #if bookings.exists():
+            # get lesson from form POST request
+            lesson = Lesson.objects.get(time=request.POST.get('lesson'))
+
+            # check if user has an active booking
+            bookings = Attendee.objects.filter(
+                user=request.user, lesson__time__gte=timezone.localtime())
+
+            # if bookings.exists():
             #    messages.warning(request, "You already have an active booking, you can only check into one class at a time!")
             #    return redirect('dashboard_page', lesson.schedule.date)
-            
-            #create new attendee instance with request.User
+
+            # create new attendee instance with request.User
             attendee = Attendee(user=request.user)
-            
-            #add attendee to lesson
+
+            # add attendee to lesson
             attendee.lesson = lesson
             attendee.save()
 
@@ -48,9 +50,11 @@ def check_in(request):
             return redirect('dashboard_page', lesson.schedule.date)
 
         else:
-            messages.error(request, "You must have an active membership to check in to class")
+            messages.error(
+                request, "You must have an active membership to check in to class")
             return redirect('dashboard_redirect')
     return redirect('dashboard_redirect')
+
 
 @login_required
 def confirm_cancel_view(request, lesson):
@@ -65,10 +69,9 @@ def cancel_check_in(request):
     if request.method == "POST":
         lesson = Lesson.objects.get(time=request.POST.get('lesson'))
 
-        attendee =  Attendee.objects.get(lesson=lesson, user=request.user)
+        attendee = Attendee.objects.get(lesson=lesson, user=request.user)
         attendee.delete()
 
-        messages.warning(request, "You have successfully cancelled your appointment")
-        return redirect('dashboard_page', lesson.schedule.date)        
-
-
+        messages.warning(
+            request, "You have successfully cancelled your appointment")
+        return redirect('dashboard_page', lesson.schedule.date)

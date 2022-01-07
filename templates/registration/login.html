@@ -43,8 +43,11 @@
           Submit
         </button>
       </div>
-              <p class="text-sm">Don't have an account yet? <a href={% url 'register' %} class="underline font-semibold">Click here to register</a></p>
-
+      {% if form.errors %}
+      <p class="text-sm mb-2">Forgot your password? <a href={% url 'password_reset' %} class="underline font-semibold">Click here to reset</a></p>
+      {% else %}
+      <p class="text-sm">Don't have an account yet? <a href={% url 'register' %} class="underline font-semibold">Click here to register</a></p>
+      {% endif %}
     </form>
   </div>
   <div

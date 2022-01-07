@@ -3,7 +3,7 @@ from django.conf import settings
 
 from .views import cancel_check_in, check_in, confirm_cancel_view
 
-app_name="checkins"
+app_name = "checkins"
 
 urlpatterns = [
     path('', check_in, name="checkin_view"),

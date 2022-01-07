@@ -129,11 +129,11 @@ WSGI_APPLICATION = 'execbjj.wsgi.application'
 
 if DEBUG:
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'db.sqlite3',
+        }
     }
-}
 else:
     DATABASES = {
         'default': dj_database_url.parse(env('DATABASE_URL'))
