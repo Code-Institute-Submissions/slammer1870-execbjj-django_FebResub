@@ -16,6 +16,7 @@ class CustomUserManager(BaseUserManager):
     Custom user model manager where email is the unique identifiers
     for authentication instead of usernames.
     """
+
     def create_user(self, email, password, **extra_fields):
         """
         Create and save a User with the given email and password.
@@ -42,11 +43,11 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('Superuser must have is_superuser=True.'))
         return self.create_user(email, password, **extra_fields)
 
+
 class CustomUser(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
     stripe_customer_id = models.CharField(max_length=50, null=True)
-
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -56,14 +57,16 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
-#Receiver to create customer in Stripe and assing their StripeID to the CustomUser object
+# Receiver to create customer in Stripe and assing their StripeID to the CustomUser object
+
+
 @receiver(post_save, sender=CustomUser)
 def create_stripe_id(sender, instance, **kwargs):
 
     name = str("{0} {1}").format(instance.first_name, instance.last_name)
 
     if instance.stripe_customer_id == None:
-    
+
         stripe_customer = stripe.Customer.create(
             name=name,
             email=instance.email
@@ -75,14 +78,18 @@ def create_stripe_id(sender, instance, **kwargs):
         instance.save()
         post_save.connect(create_stripe_id, sender=CustomUser)
 
-#Membership features
+# Membership features
+
+
 class MembershipFeature(models.Model):
     feature = models.CharField(max_length=180)
 
     def __str__(self):
         return self.feature
 
-#Membership Class
+# Membership Class
+
+
 class Membership(models.Model):
     name = models.CharField(max_length=100)  # Monthly / Quarterly / Annual
     slug = models.SlugField()
@@ -96,10 +103,14 @@ class Membership(models.Model):
     def __str__(self):
         return self.name
 
-#Subscription Class
+# Subscription Class
+
+
 class Subscription(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    membership = models.ForeignKey(Membership, on_delete=models.CASCADE, related_name='memberships')
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    membership = models.ForeignKey(
+        Membership, on_delete=models.CASCADE, related_name='memberships')
     created = models.DateTimeField(auto_now_add=True)
     stripe_subscription_id = models.CharField(max_length=50, null=True)
     status = models.CharField(max_length=100)
@@ -111,6 +122,6 @@ class Subscription(models.Model):
     def is_active(self):
         return self.status == "active" or self.status == "inactive"
 
-#Schedule Class
+# Schedule Class
 
-#Technique of the Week Class
+# Technique of the Week Class

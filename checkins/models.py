@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 
 # Create your models here.
+
+
 class Schedule(models.Model):
     date = models.DateField(unique=True)
 
@@ -17,7 +19,7 @@ class Lesson(models.Model):
 
     @property
     def remaining(self):
-        #NB Class size is hard coded to 20
+        # Class size is hard coded to 20
         amount = 20 - len(self.attendee_set.all())
         return amount
 
@@ -26,10 +28,11 @@ class Lesson(models.Model):
 
     def __str__(self):
         return str(self.time)
-    
+
 
 class Attendee(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, blank=True)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=True)
     checked_in = models.BooleanField(default=False)
 
@@ -38,5 +41,3 @@ class Attendee(models.Model):
 
     def __str__(self):
         return str(self.user.first_name)
-    
-

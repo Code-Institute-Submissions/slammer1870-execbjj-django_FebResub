@@ -1,8 +1,15 @@
 <!--500 Page-->
-{% extends "base.html" %}{% block content %}
+{% extends "base.html" %}
+{% block content %}
 <div class="h-screen w-screen flex items-center justify-center">
-<div>
-<h1 class="text-4xl mb-4">500 Internal Eerver error</h1>
-<p class="text-xl font-light mb-4">Oops, it looks like we're having some server issues</p>
-<a href="{% url 'index_page' %}" class="font-medium underline">Click here to go back home</a></div></div>
+  <div>
+    <h1 class="text-4xl mb-4">500 Internal Server Error</h1>
+    <p class="text-xl font-light mb-4">
+      Oops, it looks like we're having some server issues
+    </p>
+    <a href="{% url 'index_page' %}" class="font-medium underline"
+      >Click here to go back home</a
+    >
+  </div>
+</div>
 {% endblock %}

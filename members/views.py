@@ -32,7 +32,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
 def index_page(request):
-    #messages.success(request, "Hey")
+    # messages.success(request, "Hey")
 
     newsletter_form = NewsletterForm()
     contact_form = ContactForm()
@@ -348,53 +348,35 @@ def check_in(request):
     return redirect('dashboard_page')
 
 
+endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+
+
 @csrf_exempt
 def webhook(request):
     # You can use webhooks to receive information about asynchronous payment events.
     # For more about our webhook events check out https://stripe.com/docs/webhooks.
-    #webhook_secret = settings.STRIPE_WEBHOOK_SECRET
-    webhook_secret = settings.STRIPE_WEBHOOK_SECRET
-
+    # webhook_secret = settings.STRIPE_WEBHOOK_SECRET
     payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event_type = None
 
-    # Retrieve the event by verifying the signature using the raw body and secret if webhook signing is configured.
-    signature = request.META["HTTP_STRIPE_SIGNATURE"]
     try:
-        event = stripe.Event.construct_from(
-            json.loads(payload), stripe.api_key
+        event_type = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
         )
-        data = event['data']
-    except Exception as e:
-        return e
+        data = event_type['data']
+    except ValueError as e:
+        # Invalid payload
+        print(e)
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        print(e)
+        return HttpResponse(status=400)
 
     # Get the type of webhook event sent - used to check the status of PaymentIntents.
-    event_type = event['type']
+    event_type = event_type['type']
     data_object = data['object']
-
-    '''if event_type == 'payment_intent.succeeded':
-        # Used to provision services after the trial has ended.
-        # The status of the invoice will show up as paid. Store the status in your
-        # database to reference when a user accesses your service to avoid hitting rate
-        # limits.
-        # TODO: change the users subscription and pricing
-
-        webhook_object = data["object"]
-        stripe_customer_id = webhook_object["customer"]
-
-        print(webhook_object)
-
-        stripe_sub = stripe.Subscription.retrieve(webhook_object["subscription"])
-        stripe_price_id = stripe_sub["plan"]["id"]
-
-        membership = Membership.objects.get(stripe_price_id=stripe_price_id)
-
-        user = CustomUser.objects.get(stripe_customer_id=stripe_customer_id)
-        
-        subscription = Subscription.objects.get(user=user)
-        #subscription.status = stripe_sub["status"]
-        subscription.stripe_subscription_id = webhook_object["id"]
-        subscription.membership = membership
-        subscription.save()'''
 
     if event_type == 'customer.subscription.updated':
         # Used to provision services after the trial has ended.
@@ -444,9 +426,10 @@ def create_customer_portal(request):
 
     session = stripe.billing_portal.Session.create(
         customer=request.user.stripe_customer_id,
-        return_url="http://execbjj.com/dashboard",
+        return_url=request.META['HTTP_REFERER'],
     )
     return redirect(session.url)
+
 
 def flyer(request):
     headers = {
@@ -457,7 +440,7 @@ def flyer(request):
 
     data = '{"name":"flyerview","url":"http://execbjj.com","domain":"execbjj.com","width":1666}'
 
-    response = requests.post('https://plausible.io/api/event', headers=headers, data=data)
+    response = requests.post(
+        'https://plausible.io/api/event', headers=headers, data=data)
 
     return redirect("index_page")
-
