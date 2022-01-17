@@ -42,6 +42,7 @@ if READ_DOT_ENV_FILE:
 
 # False if not in os.environ
 DEBUG = env('DEBUG')
+LOCAL = env('LOCAL')
 
 # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
 SECRET_KEY = env('SECRET_KEY')
@@ -127,7 +128,7 @@ WSGI_APPLICATION = 'execbjj.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-if DEBUG:
+if LOCAL:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
