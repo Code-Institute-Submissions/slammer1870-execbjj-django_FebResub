@@ -30,6 +30,9 @@ class Lesson(models.Model):
             amount = 16 - len(self.attendee_set.all())
         return amount
 
+    class Meta:
+        ordering = ['time'] #Sort in desc order
+
     def __str__(self):
         return str(self.time)
 
