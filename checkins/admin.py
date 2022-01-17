@@ -26,6 +26,8 @@ class LessonAdmin(admin.ModelAdmin):
         AttendeeInline,
     ]
     model = Lesson
+    ordering = ('-time',)
+
 
 
 admin.site.register(Schedule, ScheduleAdmin)
