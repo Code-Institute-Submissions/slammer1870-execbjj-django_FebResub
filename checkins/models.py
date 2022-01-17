@@ -10,7 +10,10 @@ class Schedule(models.Model):
     def __str__(self):
         return str(self.date)
 
-CLASS_CHOICES = (("Gi Class (Beginners)", "GI"), ("NoGi Class (Beginners)","NOGI"), ("Gi Class (Mixed Levels)", "GIMIX"), ("NoGi Class (Mixed Levels)","NOGIMIX"), ("Open Mat","OPEN"), ("Sparring Class","SPARRING"), ("Wrestling","WRESTLING"))
+
+CLASS_CHOICES = (("Gi Class (Beginners)", "GI"), ("NoGi Class (Beginners)", "NOGI"), ("Gi Class (Mixed Levels)", "GIMIX"),
+                 ("NoGi Class (Mixed Levels)", "NOGIMIX"), ("Open Mat", "OPEN"), ("Sparring Class", "SPARRING"), ("Wrestling", "WRESTLING"))
+
 
 class Lesson(models.Model):
     time = models.DateTimeField(unique=True)
@@ -19,12 +22,13 @@ class Lesson(models.Model):
 
     @property
     def remaining(self):
-        # Class size is hard coded to 20
-        amount = 20 - len(self.attendee_set.all())
-        return amount
 
-    class Meta:
-        ordering = ['time']
+        if self.class_type == "Gi Class (Beginners)" or self.class_type == "NoGi Class (Beginners)":
+            amount = 12 - len(self.attendee_set.all())
+            return amount
+        else:
+            amount = 16 - len(self.attendee_set.all())
+        return amount
 
     def __str__(self):
         return str(self.time)
