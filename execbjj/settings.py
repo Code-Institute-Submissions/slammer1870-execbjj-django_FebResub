@@ -33,7 +33,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    LOCAL=(bool, False)
 )
 # reading .env file
 READ_DOT_ENV_FILE = env.bool('READ_DOT_ENV_FILE', default=False)
@@ -42,6 +43,7 @@ if READ_DOT_ENV_FILE:
 
 # False if not in os.environ
 DEBUG = env('DEBUG')
+LOCAL = env('LOCAL')
 
 # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
 SECRET_KEY = env('SECRET_KEY')
@@ -127,7 +129,7 @@ WSGI_APPLICATION = 'execbjj.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-if DEBUG:
+if LOCAL:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
