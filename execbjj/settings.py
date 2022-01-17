@@ -33,7 +33,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    LOCAL=(bool, False)
 )
 # reading .env file
 READ_DOT_ENV_FILE = env.bool('READ_DOT_ENV_FILE', default=False)
