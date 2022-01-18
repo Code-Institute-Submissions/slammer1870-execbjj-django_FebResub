@@ -178,8 +178,6 @@ def dashboard_page(request, date):
     technique_of_the_week = TechniqueOfTheWeek.objects.filter(
         date__range=[last_week, today])
     
-    print("text is" ,technique_of_the_week)
-
     if technique_of_the_week.exists():
         technique_of_the_week = technique_of_the_week.first()
         techniques = technique_of_the_week.video.all()
