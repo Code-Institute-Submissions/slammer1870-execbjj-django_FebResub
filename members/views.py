@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from members.models import CustomUser, Membership, Subscription
 from checkins.models import Schedule
+from video.models import TechniqueOfTheWeek
 
 from datetime import datetime, timedelta
 
@@ -172,12 +173,26 @@ def dashboard_page(request, date):
     else:
         yesterday = None
 
+    last_week = today + timedelta(days=-7)
+
+    technique_of_the_week = TechniqueOfTheWeek.objects.filter(
+        date__range=[last_week, today])
+    
+    print("text is" ,technique_of_the_week)
+
+    if technique_of_the_week.exists():
+        technique_of_the_week = technique_of_the_week.first()
+        techniques = technique_of_the_week.video.all()
+    else:
+        techniques = None
+
     context = {
         "membership": membership,
         "today": today,
         "yesterday": yesterday,
         "tomorrow": tomorrow,
-        "schedule": schedule
+        "schedule": schedule,
+        "techniques": techniques,
     }
     return render(request, "dashboard.html", context)
 

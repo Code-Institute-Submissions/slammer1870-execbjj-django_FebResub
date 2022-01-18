@@ -49,3 +49,7 @@ class Video(models.Model):
 
     def __str__(self):
         return self.title
+
+class TechniqueOfTheWeek(models.Model):
+    video = models.ManyToManyField(Video)
+    date = models.DateField(null=True)

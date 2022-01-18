@@ -1,43 +1,49 @@
 {% extends "base.html" %} {% block content %} {% load checkin_extras %}
-<div class="pt-20 lg:pt-24 p-4 lg:px-0 container mx-auto lg:h-screen">
+<div class="pt-20 lg:pt-24 p-4 lg:px-0 container mx-auto lg:min-h-screen">
   <h1 class="text-3xl lg:text-5xl font-semibold uppercase mb-4 md:mb-0 md:py-4">
     Dashboard
   </h1>
   <p class="mb-6">
-    Hi {{user.first_name}}, welcome to your dashboard, all of your membership information and class check
-    ins can be found here!
+    Hi {{user.first_name}}, welcome to your dashboard, all of your membership
+    information and class check ins can be found here!
   </p>
-  {% comment %}
-  {% # Conditional rendering alert for beginners course expiry notification  %}
-  {% if membership.slug == "beginners-course" %}
-    <div
-      class="
-        w-full
-        p-4
-        mx-auto
-        relative
-        text-white
-        bg-red-500
-        mb-6"
-        >
-        Oh! It looks like your subscription is about to expire on 27/11/20 at 12:00pm. Check out the "My Membership" section below to upgrade to a membership and continue being able to check into class!
-      </div>
-    {% endif %}
-  {% endcomment %}
+  {% comment %} {% # Conditional rendering alert for beginners course expiry
+  notification %} {% if membership.slug == "beginners-course" %}
+  <div class="w-full p-4 mx-auto relative text-white bg-red-500 mb-6">
+    Oh! It looks like your subscription is about to expire on 27/11/20 at
+    12:00pm. Check out the "My Membership" section below to upgrade to a
+    membership and continue being able to check into class!
+  </div>
+  {% endif %} {% endcomment %}
   <div class="bg-yellow-100 w-full p-4">
-    <div class="flex items-center justify-between text-xs md:text-base lg:text-xl">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 md:h-8 w-auto" viewBox="0 0 71 55" fill="none">
+    <div
+      class="flex items-center justify-between text-xs md:text-base lg:text-xl"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 md:h-8 w-auto"
+        viewBox="0 0 71 55"
+        fill="none"
+      >
         <g clip-path="url(#clip0)">
-        <path d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542C45.5603 0.39851 45.468 0.440769 45.4204 0.525289C44.7963 1.6353 44.105 3.0834 43.6209 4.2216C38.1637 3.4046 32.7345 3.4046 27.3892 4.2216C26.905 3.0581 26.1886 1.6353 25.5617 0.525289C25.5141 0.443589 25.4218 0.40133 25.3294 0.41542C20.2584 1.2888 15.4057 2.8186 10.8776 4.8978C10.8384 4.9147 10.8048 4.9429 10.7825 4.9795C1.57795 18.7309 -0.943561 32.1443 0.293408 45.3914C0.299005 45.4562 0.335386 45.5182 0.385761 45.5576C6.45866 50.0174 12.3413 52.7249 18.1147 54.5195C18.2071 54.5477 18.305 54.5139 18.3638 54.4378C19.7295 52.5728 20.9469 50.6063 21.9907 48.5383C22.0523 48.4172 21.9935 48.2735 21.8676 48.2256C19.9366 47.4931 18.0979 46.6 16.3292 45.5858C16.1893 45.5041 16.1781 45.304 16.3068 45.2082C16.679 44.9293 17.0513 44.6391 17.4067 44.3461C17.471 44.2926 17.5606 44.2813 17.6362 44.3151C29.2558 49.6202 41.8354 49.6202 53.3179 44.3151C53.3935 44.2785 53.4831 44.2898 53.5502 44.3433C53.9057 44.6363 54.2779 44.9293 54.6529 45.2082C54.7816 45.304 54.7732 45.5041 54.6333 45.5858C52.8646 46.6197 51.0259 47.4931 49.0921 48.2228C48.9662 48.2707 48.9102 48.4172 48.9718 48.5383C50.038 50.6034 51.2554 52.5699 52.5959 54.435C52.6519 54.5139 52.7526 54.5477 52.845 54.5195C58.6464 52.7249 64.529 50.0174 70.6019 45.5576C70.6551 45.5182 70.6887 45.459 70.6943 45.3942C72.1747 30.0791 68.2147 16.7757 60.1968 4.9823C60.1772 4.9429 60.1437 4.9147 60.1045 4.8978ZM23.7259 37.3253C20.2276 37.3253 17.3451 34.1136 17.3451 30.1693C17.3451 26.225 20.1717 23.0133 23.7259 23.0133C27.308 23.0133 30.1626 26.2532 30.1066 30.1693C30.1066 34.1136 27.28 37.3253 23.7259 37.3253ZM47.3178 37.3253C43.8196 37.3253 40.9371 34.1136 40.9371 30.1693C40.9371 26.225 43.7636 23.0133 47.3178 23.0133C50.9 23.0133 53.7545 26.2532 53.6986 30.1693C53.6986 34.1136 50.9 37.3253 47.3178 37.3253Z" fill="#5865F2"/>
+          <path
+            d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542C45.5603 0.39851 45.468 0.440769 45.4204 0.525289C44.7963 1.6353 44.105 3.0834 43.6209 4.2216C38.1637 3.4046 32.7345 3.4046 27.3892 4.2216C26.905 3.0581 26.1886 1.6353 25.5617 0.525289C25.5141 0.443589 25.4218 0.40133 25.3294 0.41542C20.2584 1.2888 15.4057 2.8186 10.8776 4.8978C10.8384 4.9147 10.8048 4.9429 10.7825 4.9795C1.57795 18.7309 -0.943561 32.1443 0.293408 45.3914C0.299005 45.4562 0.335386 45.5182 0.385761 45.5576C6.45866 50.0174 12.3413 52.7249 18.1147 54.5195C18.2071 54.5477 18.305 54.5139 18.3638 54.4378C19.7295 52.5728 20.9469 50.6063 21.9907 48.5383C22.0523 48.4172 21.9935 48.2735 21.8676 48.2256C19.9366 47.4931 18.0979 46.6 16.3292 45.5858C16.1893 45.5041 16.1781 45.304 16.3068 45.2082C16.679 44.9293 17.0513 44.6391 17.4067 44.3461C17.471 44.2926 17.5606 44.2813 17.6362 44.3151C29.2558 49.6202 41.8354 49.6202 53.3179 44.3151C53.3935 44.2785 53.4831 44.2898 53.5502 44.3433C53.9057 44.6363 54.2779 44.9293 54.6529 45.2082C54.7816 45.304 54.7732 45.5041 54.6333 45.5858C52.8646 46.6197 51.0259 47.4931 49.0921 48.2228C48.9662 48.2707 48.9102 48.4172 48.9718 48.5383C50.038 50.6034 51.2554 52.5699 52.5959 54.435C52.6519 54.5139 52.7526 54.5477 52.845 54.5195C58.6464 52.7249 64.529 50.0174 70.6019 45.5576C70.6551 45.5182 70.6887 45.459 70.6943 45.3942C72.1747 30.0791 68.2147 16.7757 60.1968 4.9823C60.1772 4.9429 60.1437 4.9147 60.1045 4.8978ZM23.7259 37.3253C20.2276 37.3253 17.3451 34.1136 17.3451 30.1693C17.3451 26.225 20.1717 23.0133 23.7259 23.0133C27.308 23.0133 30.1626 26.2532 30.1066 30.1693C30.1066 34.1136 27.28 37.3253 23.7259 37.3253ZM47.3178 37.3253C43.8196 37.3253 40.9371 34.1136 40.9371 30.1693C40.9371 26.225 43.7636 23.0133 47.3178 23.0133C50.9 23.0133 53.7545 26.2532 53.6986 30.1693C53.6986 34.1136 50.9 37.3253 47.3178 37.3253Z"
+            fill="#5865F2"
+          />
         </g>
         <defs>
-        <clipPath id="clip0">
-        <rect width="71" height="55" fill="white"/>
-        </clipPath>
+          <clipPath id="clip0">
+            <rect width="71" height="55" fill="white" />
+          </clipPath>
         </defs>
       </svg>
       <h5 class="font-medium">Join our Discord Server!</h5>
-      <a href="https://discord.gg/a3BduJe32b" class="px-2 py-1 bg-indigo-500 flex items-center text-white" target="_blank" rel="noopener noreferrer">Join Now
+      <a
+        href="https://discord.gg/a3BduJe32b"
+        class="px-2 py-1 bg-indigo-500 flex items-center text-white"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Join Now
         <svg
           fill="none"
           stroke="currentColor"
@@ -46,44 +52,45 @@
           stroke-width="2"
           class="w-4 h-4 ml-1 md:w-6 md:h-6 md:ml-2"
           viewBox="0 0 24 24"
-                    >
-            <path d="M5 12h14M12 5l7 7-7 7"></path>
-          </svg>
-        </a>
-      </div>
+        >
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </a>
     </div>
-  <div class="flex flex-wrap justify-between w-full lg:py-12">
-     <!--Schedule-->
-    <div class="w-full lg:w-4/12 my-8 lg:m-0" id="schedule">
+  </div>
+  <div class="grid lg:gap-12 lg:grid-cols-3 lg:py-12">
+    <!--Schedule-->
+    <div class="col-span-1 my-8 lg:m-0" id="schedule">
       <h3 class="text-2xl font-medium mb-4 uppercase">Schedule</h3>
       <div class="flex items-center justify-between">
-        {% if yesterday %}<a href="{% url 'dashboard_page' yesterday %}"><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="9.707"
-          height="18.037"
-          viewBox="0 0 9.707 18.037"
-        >
-          <line
-            id="Line_15"
-            data-name="Line 15"
-            x1="9"
-            y2="9"
-            transform="translate(0.354 0.354)"
-            fill="none"
-            stroke="#000"
-            stroke-width="1"
-          />
-          <line
-            id="Line_16"
-            data-name="Line 16"
-            x1="9"
-            y1="9"
-            transform="translate(0.354 8.684)"
-            fill="none"
-            stroke="#000"
-            stroke-width="1"
-          />
-        </svg></a>{% else %}<svg
+        {% if yesterday %}<a href="{% url 'dashboard_page' yesterday %}"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="9.707"
+            height="18.037"
+            viewBox="0 0 9.707 18.037"
+          >
+            <line
+              id="Line_15"
+              data-name="Line 15"
+              x1="9"
+              y2="9"
+              transform="translate(0.354 0.354)"
+              fill="none"
+              stroke="#000"
+              stroke-width="1"
+            />
+            <line
+              id="Line_16"
+              data-name="Line 16"
+              x1="9"
+              y1="9"
+              transform="translate(0.354 8.684)"
+              fill="none"
+              stroke="#000"
+              stroke-width="1"
+            /></svg></a
+        >{% else %}<svg
           xmlns="http://www.w3.org/2000/svg"
           width="9.707"
           height="18.037"
@@ -112,90 +119,162 @@
         </svg>
         {% endif %}
         <span class="font-light">{{today|date:"D, d F, Y"}}</span
-        ><a href="{% url 'dashboard_page' tomorrow %}"><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="9.707"
-          height="18.037"
-          viewBox="0 0 9.707 18.037"
-        >
-          <line
-            id="Line_17"
-            data-name="Line 17"
-            x1="9"
-            y2="9"
-            transform="translate(9.354 0.354) rotate(90)"
-            fill="none"
-            stroke="#000"
-            stroke-width="1"
-          />
-          <line
-            id="Line_18"
-            data-name="Line 18"
-            x1="9"
-            y1="9"
-            transform="translate(9.354 8.684) rotate(90)"
-            fill="none"
-            stroke="#000"
-            stroke-width="1"
-          />
-        </svg></a>
+        ><a href="{% url 'dashboard_page' tomorrow %}"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="9.707"
+            height="18.037"
+            viewBox="0 0 9.707 18.037"
+          >
+            <line
+              id="Line_17"
+              data-name="Line 17"
+              x1="9"
+              y2="9"
+              transform="translate(9.354 0.354) rotate(90)"
+              fill="none"
+              stroke="#000"
+              stroke-width="1"
+            />
+            <line
+              id="Line_18"
+              data-name="Line 18"
+              x1="9"
+              y1="9"
+              transform="translate(9.354 8.684) rotate(90)"
+              fill="none"
+              stroke="#000"
+              stroke-width="1"
+            /></svg
+        ></a>
       </div>
-      <table class="table-auto w-full text-left whitespace-no-wrap my-6 text-xs md:text-base">
+      <table
+        class="
+          table-auto
+          w-full
+          text-left
+          whitespace-no-wrap
+          my-6
+          text-xs
+          md:text-base
+        "
+      >
         <tbody>
-          {% if schedule != None %}
-          {% for lesson in schedule.lesson_set.all %}
-           <tr class="{% if forloop.counter0|divisibleby:2 %}bg-gray-200{% else %}bg-gray-50{% endif %}">
+          {% if schedule != None %} {% for lesson in schedule.lesson_set.all %}
+          <tr
+            class="
+              {% if forloop.counter0|divisibleby:2 %}
+              bg-gray-200
+              {% else %}
+              bg-gray-50
+              {% endif %}
+            "
+          >
             <td class="px-4 py-3">{{lesson.time|date:"h:iA"}}</td>
             <td class="px-4 py-3 font-medium flex flex-col item-start">
-            {{lesson.class_type}}
-            {% if not lesson|already_happened %}
+              {{lesson.class_type}} {% if not lesson|already_happened %}
               <span class="font-thin text-xs flex items-center relative">
                 <span class="flex relative h-2 w-2 mr-1">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  <span
+                    class="
+                      animate-ping
+                      absolute
+                      inline-flex
+                      h-full
+                      w-full
+                      rounded-full
+                      bg-green-400
+                      opacity-75
+                    "
+                  ></span>
+                  <span
+                    class="
+                      relative
+                      inline-flex
+                      rounded-full
+                      h-2
+                      w-2
+                      bg-green-500
+                    "
+                  ></span>
                 </span>
                 {{lesson.remaining}} Places
               </span>
-            {% endif %}
+              {% endif %}
             </td>
-            <td class="px-4 py-3 text-right">{% if lesson|already_happened %}
-            {% elif user|checked_in:lesson %}<div class="flex items-center justify-end"><p class="bg-green-400 px-2 py-1 text-white text-center tracking-tighter">
-                Booked
-              </p>
-              <a href="{% url 'checkins:confirm_cancel_view' lesson %}" class="bg-red-400 px-2 py-1 text-white ml-2 tracking-tighter">Cancel</a>
-              </div>{% else %}
-               <form method="POST" action="{% url 'checkins:checkin_view' %}">
-               {% csrf_token %}
-               <button type="submit" class="bg-indigo-400 px-2 py-1 text-white flex items-center ml-auto tracking-tighter">
-                Check In<svg
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                class="w-4 h-4 ml-1"
-                viewBox="0 0 24 24"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7"></path>
-              </svg>
-              </button>
-              <input type="hidden" name="lesson" value="{{lesson}}" />
-              </form>{% endif %}
+            <td class="px-4 py-3 text-right">
+              {% if lesson|already_happened %} {% elif user|checked_in:lesson %}
+              <div class="flex items-center justify-end">
+                <p
+                  class="
+                    bg-green-400
+                    px-2
+                    py-1
+                    text-white text-center
+                    tracking-tighter
+                  "
+                >
+                  Booked
+                </p>
+                <a
+                  href="{% url 'checkins:confirm_cancel_view' lesson %}"
+                  class="bg-red-400 px-2 py-1 text-white ml-2 tracking-tighter"
+                  >Cancel</a
+                >
+              </div>
+              {% else %}
+              <form method="POST" action="{% url 'checkins:checkin_view' %}">
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="
+                    bg-indigo-400
+                    px-2
+                    py-1
+                    text-white
+                    flex
+                    items-center
+                    ml-auto
+                    tracking-tighter
+                  "
+                >
+                  Check In<svg
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    class="w-4 h-4 ml-1"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                  </svg>
+                </button>
+                <input type="hidden" name="lesson" value="{{lesson}}" />
+              </form>
+              {% endif %}
             </td>
           </tr>
-          {% endfor %}
-          {% else %}
-          <tr class="w-full"><td></td><td class="py-4 text-xl text-center">It looks like there are no classes scheduled for today!</td><td></td></tr>
+          {% endfor %} {% else %}
+          <tr class="w-full">
+            <td></td>
+            <td class="py-4 text-xl text-center">
+              It looks like there are no classes scheduled for today!
+            </td>
+            <td></td>
+          </tr>
           {% endif %}
         </tbody>
       </table>
     </div>
     <!--Technique of the Week-->
-    <div class="w-full lg:w-4/12 mb-4 lg:m-0">
+    <div class="col-span-1 mb-4 lg:m-0">
       <h3 class="text-2xl font-medium mb-4 uppercase">Technique of the Week</h3>
+      {% for video in techniques %}
+      <div class="mb-4">
       <div style="padding: 56.25% 0 0 0; position: relative">
         <iframe
-          src="https://player.vimeo.com/video/505669447?h=fb7ce07180&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+          src={{video.url}}
           frameborder="0"
           allow="autoplay; fullscreen; picture-in-picture"
           allowfullscreen
@@ -203,15 +282,16 @@
           title="Armbar from Closed Guard"
         ></iframe>
       </div>
+    </div>
+      {% endfor %}
       <script src="https://player.vimeo.com/api/player.js"></script>
     </div>
     <!--Membership type-->
-    <div class="w-full lg:w-3/12 mt-4 lg:m-0">
+    <div class="col-span-1 mt-4 lg:m-0">
       <h3 class="text-2xl font-medium mb-4 uppercase">My Membership</h3>
       {% if membership != None %}
       <div class="flex flex-wrap -m-4 mb-4">
         <div class="p-4 w-full">
-        
           <div
             class="
               h-full
@@ -273,8 +353,8 @@
                   <path d="M20 6L9 17l-5-5"></path>
                 </svg> </span
               >{{feature.feature}}
-            </p>{% endfor %}
-            {% if membership.slug == "beginners-course" %}<a
+            </p>
+            {% endfor %} {% if membership.slug == "beginners-course" %}<a
               href="{% url 'members:membership_page' %}"
               class="
                 flex
@@ -301,82 +381,69 @@
                 viewBox="0 0 24 24"
               >
                 <path d="M5 12h14M12 5l7 7-7 7"></path>
-              </svg>
-            </a>{% else %}
+              </svg> </a
+            >{% else %}
             <form method="POST" action="{% url 'members:customer_portal' %}">
-            {% csrf_token %}
-            <button
-              type="submit"
-              class="
-                flex
-                items-center
-                mt-auto
-                text-white
-                bg-blue-400
-                border-0
-                py-2
-                px-4
-                w-full
-                focus:outline-none
-                hover:bg-gray-300
-              "
-            >
-              Manage my Membership
-              <svg
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                class="w-4 h-4 ml-auto"
-                viewBox="0 0 24 24"
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="
+                  flex
+                  items-center
+                  mt-auto
+                  text-white
+                  bg-blue-400
+                  border-0
+                  py-2
+                  px-4
+                  w-full
+                  focus:outline-none
+                  hover:bg-gray-300
+                "
               >
-                <path d="M5 12h14M12 5l7 7-7 7"></path>
-              </svg>
-            </button></form>{% endif %}
+                Manage my Membership
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  class="w-4 h-4 ml-auto"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </button>
+            </form>
+            {% endif %}
             <p class="text-xs text-gray-500 mt-3">
               Should you have any questions related to your subscription feel
               free to contact sam@execbjj.com for assistance.
             </p>
           </div>
         </div>
-      </div>{% else %}
+      </div>
+      {% else %}
       <div class="border p-4">
-        <p class="mb-4">
-            It looks like you do not yet have a Membership
-        </p>
-        <a
-              href={% url 'members:membership_page' %}
-              class="
-                flex
-                items-center
-                mt-auto
-                text-white
-                bg-blue-400
-                border-0
-                py-2
-                px-4
-                w-full
-                focus:outline-none
-                hover:bg-gray-500
-              "
-            >
-              Select a Membership
-              <svg
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                class="w-4 h-4 ml-auto"
-                viewBox="0 0 24 24"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7"></path>
-              </svg>
-            </a></div>
+        <p class="mb-4">It looks like you do not yet have a Membership</p>
+        <a href={% url 'members:membership_page' %} class=" flex items-center
+        mt-auto text-white bg-blue-400 border-0 py-2 px-4 w-full
+        focus:outline-none hover:bg-gray-500 " > Select a Membership
+          <svg
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            class="w-4 h-4 ml-auto"
+            viewBox="0 0 24 24"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
       {% endif %}
     </div>
   </div>
 </div>
-{% block confirm %}{% endblock confirm %}
-{% endblock %}
+{% block confirm %}{% endblock confirm %} {% endblock %}
