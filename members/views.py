@@ -475,7 +475,7 @@ def crypto_payment(request):
         'name': 'Coffee',
         'description': 'A really good local coffee.',
         'local_price': {
-            'amount': '0.01',
+            'amount': '0.3',
             'currency': 'EUR'
         },
         'pricing_type': 'fixed_price',
