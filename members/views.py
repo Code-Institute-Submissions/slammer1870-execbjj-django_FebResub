@@ -510,7 +510,8 @@ def coinbase_webhook(request):
         if event['type'] == 'charge:confirmed':
             logger.info('Payment confirmed.')
             
-            customer_username = event['data']['metadata']['customer_username']
+            #customer_username = event['data']['metadata']['customer_username']
+            customer_username = "sam@execbjj.com"
 
             membership = Membership.objects.get(
                 slug='annual')
