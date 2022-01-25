@@ -519,7 +519,7 @@ def coinbase_webhook(request):
                 email=customer_username)
 
             subscription = Subscription.objects.get_or_create(user=user)
-            subscription.status = 'active'
+            subscription.status = "active"
             subscription.stripe_subscription_id = "coinbase"
             subscription.membership = membership
             subscription.save()
