@@ -44,7 +44,7 @@
             €{{membership.price}} {{membership.frequency}}
           </h1>
           <!--Membership features-->
-          {% for feature in membership.feature.all|dictsort:"feature.lower" %}
+          {% for feature in membership.features.all|dictsort:"feature.lower" %}
           <p class="flex items-center text-gray-600 mb-2">
             <span
               class="
