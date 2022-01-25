@@ -1,3 +1,4 @@
+import email
 from django.contrib import messages
 from django.conf import settings
 from django.http.response import HttpResponse
@@ -5,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import base_user, login, authenticate
 from django.views.generic import ListView
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -27,6 +29,13 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
 from .forms import RegisterForm, NewsletterForm, ContactForm
+
+from coinbase_commerce.client import Client
+
+from coinbase_commerce.error import SignatureVerificationError, WebhookInvalidPayload
+from coinbase_commerce.webhook import Webhook
+
+import logging
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -177,7 +186,7 @@ def dashboard_page(request, date):
 
     technique_of_the_week = TechniqueOfTheWeek.objects.filter(
         date__range=[last_week, today])
-    
+
     if technique_of_the_week.exists():
         technique_of_the_week = technique_of_the_week.first()
         techniques = technique_of_the_week.video.all()
@@ -457,3 +466,70 @@ def flyer(request):
         'https://plausible.io/api/event', headers=headers, data=data)
 
     return redirect("index_page")
+
+
+def crypto_payment(request):
+    client = Client(api_key=settings.COINBASE_COMMERCE_API_KEY)
+    domain_url = settings.DOMAIN_URL
+    product = {
+        'name': 'Coffee',
+        'description': 'A really good local coffee.',
+        'local_price': {
+            'amount': '0.01',
+            'currency': 'EUR'
+        },
+        'pricing_type': 'fixed_price',
+        'redirect_url': domain_url + 'success/',
+        'cancel_url': domain_url + 'memberships/',
+        'metadata': {
+        'customer_id': request.user.id if request.user.is_authenticated else None,
+        'customer_username': request.user.email if request.user.is_authenticated else None,
+    },
+    }
+    charge = client.charge.create(**product)
+
+    return redirect(charge['hosted_url'])
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def coinbase_webhook(request):
+    logger = logging.getLogger(__name__)
+
+    request_data = request.body.decode('utf-8')
+    request_sig = request.headers.get('X-CC-Webhook-Signature', None)
+    webhook_secret = settings.COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET
+
+    try:
+        event = Webhook.construct_event(
+            request_data, request_sig, webhook_secret)
+
+        # List of all Coinbase webhook events:
+        # https://commerce.coinbase.com/docs/api/#webhooks
+
+        if event['type'] == 'charge:confirmed':
+            logger.info('Payment confirmed.')
+            customer_id = event['data']['metadata']['customer_id']  # new
+            # new
+            customer_username = event['data']['metadata']['customer_username']
+
+            membership = Membership.objects.get(
+                slug='annual')
+
+            user = CustomUser.objects.get(
+                email=customer_username)
+
+            subscription = Subscription.objects.get_or_create(user=user)
+            subscription.status = 'active'
+            subscription.stripe_subscription_id = "coinbase"
+            subscription.membership = membership
+            subscription.save()
+        # TODO: run some custom code here
+        # you can also use 'customer_id' or 'customer_username'
+        # to fetch an actual Django user
+
+    except (SignatureVerificationError, WebhookInvalidPayload) as e:
+        return HttpResponse(e, status=400)
+
+    logger.info(f'Received event: id={event.id}, type={event.type}')
+    return HttpResponse('ok', status=200)
