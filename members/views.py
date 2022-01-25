@@ -479,12 +479,12 @@ def crypto_payment(request):
             'currency': 'EUR'
         },
         'pricing_type': 'fixed_price',
-        'redirect_url': domain_url + 'success/',
+        'redirect_url': domain_url + 'dashboard/',
         'cancel_url': domain_url + 'memberships/',
         'metadata': {
-        'customer_id': request.user.id if request.user.is_authenticated else None,
-        'customer_username': request.user.email if request.user.is_authenticated else None,
-    },
+            'customer_id': request.user.id if request.user.is_authenticated else None,
+            'customer_username': request.user.email if request.user.is_authenticated else None,
+        },
     }
     charge = client.charge.create(**product)
 
@@ -524,9 +524,12 @@ def coinbase_webhook(request):
             subscription.stripe_subscription_id = "coinbase"
             subscription.membership = membership
             subscription.save()
-        # TODO: run some custom code here
-        # you can also use 'customer_id' or 'customer_username'
-        # to fetch an actual Django user
+            messages.success(request, "Thank for you subscribing!")
+
+            return redirect('dashboard_redirect')
+            # TODO: run some custom code here
+            # you can also use 'customer_id' or 'customer_username'
+            # to fetch an actual Django user
 
     except (SignatureVerificationError, WebhookInvalidPayload) as e:
         return HttpResponse(e, status=400)
