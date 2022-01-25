@@ -513,6 +513,8 @@ def coinbase_webhook(request):
             #customer_username = event['data']['metadata']['customer_username']
             customer_username = "sam@execbjj.com"
 
+            print("event is", event['data'])
+
             membership = Membership.objects.get(
                 slug='annual')
 
