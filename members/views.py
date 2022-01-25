@@ -511,11 +511,11 @@ def coinbase_webhook(request):
             logger.info('Payment confirmed.')
             
             #customer_username = event['data']['metadata']['customer_username']
-            customer_username = "sam@execbjj.com"
-            customer_email = event['data']['customer_email']
+            customer_email = "sam@execbjj.com"
+            #customer_email = event['data']['customer_email']
 
             print("event is", event['data'])
-            print("customer_email is", customer_email)
+            #print("customer_email is", customer_email)
 
             membership = Membership.objects.get(
                 slug='annual')
