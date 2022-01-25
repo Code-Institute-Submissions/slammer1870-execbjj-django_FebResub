@@ -18,6 +18,13 @@ def checked_in(user, lesson):
 
 @register.filter
 def already_happened(lesson):
+    if lesson.time <= timezone.now():
+        return True
+    else:
+        return False
+
+@register.filter
+def closed(lesson):
     if lesson.time <= (timezone.now() + timedelta(hours=1)):
         return True
     else:

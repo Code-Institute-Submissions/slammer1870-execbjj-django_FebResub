@@ -203,7 +203,7 @@
               {% endif %}
             </td>
             <td class="px-4 py-3 text-right">
-              {% if lesson|already_happened %} {% elif user|checked_in:lesson %}
+              {% if lesson|already_happened %} {% elif lesson|closed and user|checked_in:lesson or user|checked_in:lesson %}
               <div class="flex items-center justify-end">
                 <p
                   class="
@@ -222,7 +222,7 @@
                   >Cancel</a
                 >
               </div>
-              {% else %}
+              {% elif not lesson|closed %}
               <form method="POST" action="{% url 'checkins:checkin_view' %}">
                 {% csrf_token %}
                 <button
