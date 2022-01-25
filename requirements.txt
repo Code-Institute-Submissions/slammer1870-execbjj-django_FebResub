@@ -3,7 +3,6 @@ argon2-cffi==21.3.0
 argon2-cffi-bindings==21.2.0
 asgiref==3.4.1
 astroid==2.9.0
-
 attrs==21.4.0
 autopep8==1.6.0
 backcall==0.2.0
@@ -15,6 +14,7 @@ cffi==1.15.0
 cGraph==0.1
 charset-normalizer==2.0.7
 click==8.0.3
+coinbase-commerce==1.0.1
 crispy-tailwind==0.5.0
 cycler==0.11.0
 debugpy==1.5.1
@@ -78,6 +78,7 @@ pycodestyle==2.8.0
 pycparser==2.21
 pydot==1.4.2
 Pygments==2.11.1
+pygraphviz==1.7
 pylint==2.12.2
 pymongo==3.12.0
 pyparsing==3.0.6
@@ -93,6 +94,7 @@ Send2Trash==1.8.0
 sendgrid==6.8.2
 six==1.16.0
 sqlparse==0.2.4
+starkbank-ecdsa==2.0.0
 stripe==2.61.0
 terminado==0.12.1
 testpath==0.5.0
