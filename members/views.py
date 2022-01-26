@@ -475,15 +475,15 @@ def crypto_payment(request):
     client = Client(api_key=settings.COINBASE_COMMERCE_API_KEY)
     domain_url = settings.DOMAIN_URL
     product = {
-        'name': 'Coffee',
-        'description': 'A really good local coffee.',
+        'name': 'ExecBJJ Studio Annual Membership',
+        'description': 'Annual membership with unlimited training at ExecBJJ Studio.',
         'local_price': {
-            'amount': '4.00',
+            'amount': '1190.00',
             'currency': 'EUR'
         },
         'pricing_type': 'fixed_price',
         'redirect_url': domain_url + 'dashboard/',
-        'cancel_url': domain_url + 'memberships/',
+        'cancel_url': domain_url + 'membership/',
         'metadata': {
             'customer_id': request.user.id if request.user.is_authenticated else None,
             'customer_username': request.user.email if request.user.is_authenticated else None,
