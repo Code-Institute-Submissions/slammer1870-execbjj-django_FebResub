@@ -48,7 +48,7 @@ LOCAL = env('LOCAL')
 # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
 SECRET_KEY = env('SECRET_KEY')
 
-
+DOMAIN_URL = env('DOMAIN_URL')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -56,6 +56,9 @@ SECRET_KEY = env('SECRET_KEY')
 
 STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')
+
+COINBASE_COMMERCE_API_KEY = env('COINBASE_COMMERCE_API_KEY')
+COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET= env('COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET')
 
 MAILCHIMP_API_KEY = env('MAILCHIMP_API_KEY')
 MAILCHIMP_SERVER = env('MAILCHIMP_SERVER')

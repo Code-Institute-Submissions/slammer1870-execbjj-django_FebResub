@@ -1,5 +1,6 @@
 from django import template
 from django.utils import timezone
+from datetime import timedelta
 
 from checkins.models import Attendee
 
@@ -18,6 +19,13 @@ def checked_in(user, lesson):
 @register.filter
 def already_happened(lesson):
     if lesson.time <= timezone.now():
+        return True
+    else:
+        return False
+
+@register.filter
+def closed(lesson):
+    if lesson.time <= (timezone.now() + timedelta(hours=1)):
         return True
     else:
         return False

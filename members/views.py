@@ -1,3 +1,4 @@
+import email
 from django.contrib import messages
 from django.conf import settings
 from django.http.response import HttpResponse
@@ -5,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import base_user, login, authenticate
 from django.views.generic import ListView
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -27,6 +29,13 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
 from .forms import RegisterForm, NewsletterForm, ContactForm
+
+from coinbase_commerce.client import Client
+
+from coinbase_commerce.error import SignatureVerificationError, WebhookInvalidPayload
+from coinbase_commerce.webhook import Webhook
+
+import logging
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -158,8 +167,10 @@ def dashboard_page(request, date):
 
     if subscription.exists():
         membership = subscription.first().membership
+        status = subscription.first().status
     else:
         membership = None
+        status = None
 
     today = datetime.strptime(date, "%Y-%m-%d")
 
@@ -177,7 +188,7 @@ def dashboard_page(request, date):
 
     technique_of_the_week = TechniqueOfTheWeek.objects.filter(
         date__range=[last_week, today])
-    
+
     if technique_of_the_week.exists():
         technique_of_the_week = technique_of_the_week.first()
         techniques = technique_of_the_week.video.all()
@@ -186,6 +197,7 @@ def dashboard_page(request, date):
 
     context = {
         "membership": membership,
+        "status": status,
         "today": today,
         "yesterday": yesterday,
         "tomorrow": tomorrow,
@@ -457,3 +469,109 @@ def flyer(request):
         'https://plausible.io/api/event', headers=headers, data=data)
 
     return redirect("index_page")
+
+
+def crypto_payment(request):
+    client = Client(api_key=settings.COINBASE_COMMERCE_API_KEY)
+    domain_url = settings.DOMAIN_URL
+    product = {
+        'name': 'Coffee',
+        'description': 'A really good local coffee.',
+        'local_price': {
+            'amount': '4.00',
+            'currency': 'EUR'
+        },
+        'pricing_type': 'fixed_price',
+        'redirect_url': domain_url + 'dashboard/',
+        'cancel_url': domain_url + 'memberships/',
+        'metadata': {
+            'customer_id': request.user.id if request.user.is_authenticated else None,
+            'customer_username': request.user.email if request.user.is_authenticated else None,
+        },
+    }
+    charge = client.charge.create(**product)
+
+    return redirect(charge['hosted_url'])
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def coinbase_webhook(request):
+    logger = logging.getLogger(__name__)
+
+    request_data = request.body.decode('utf-8')
+    request_sig = request.headers.get('X-CC-Webhook-Signature', None)
+    webhook_secret = settings.COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET
+
+    try:
+        event = Webhook.construct_event(
+            request_data, request_sig, webhook_secret)
+
+        # List of all Coinbase webhook events:
+        # https://commerce.coinbase.com/docs/api/#webhooks
+
+        if event['type'] == 'charge:created':
+            logger.info('Payment pending.')
+
+            customer_username = event['data']['metadata']['customer_username']
+
+            membership = Membership.objects.get(
+                slug='annual')
+
+            user = CustomUser.objects.get(
+                email=customer_username)
+
+            subscription, created = Subscription.objects.update_or_create(user=user, defaults={
+                                                                          'status': "pending", 'membership': membership, 'stripe_subscription_id': "coinbase"})
+            subscription.save()
+
+        if event['type'] == 'charge:confirmed':
+            logger.info('Payment confirmed.')
+
+            customer_username = event['data']['metadata']['customer_username']
+
+            membership = Membership.objects.get(
+                slug='annual')
+
+            user = CustomUser.objects.get(
+                email=customer_username)
+
+            subscription = Subscription.objects.get(user=user)
+            subscription.status = "bitcoin"
+            subscription.stripe_subscription_id = "coinbase"
+            subscription.membership = membership
+            subscription.save()
+
+        if event['type'] == 'charge:failed':
+            logger.info('Payment failed.')
+
+            customer_username = event['data']['metadata']['customer_username']
+
+            membership = Membership.objects.get(
+                slug='annual')
+
+            user = CustomUser.objects.get(
+                email=customer_username)
+
+            subscription = Subscription.objects.get(user=user)
+            subscription.delete()
+
+            # SendGrid configuration
+            message = Mail(
+                from_email='sam@execbjj.com',
+                to_emails=customer_username,
+                subject='Payment failed',
+                plain_text_content='Your blockchain payment failed. Please contact us to resolve this issue.')
+            try:
+                # Initialises Sendgrid Client
+                sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
+                response = sg.send(message)
+                return HttpResponse(response, status=200)
+            except Exception as e:
+                return HttpResponse(e, status=400)
+
+    except (SignatureVerificationError, WebhookInvalidPayload) as e:
+        return HttpResponse(e, status=400)
+
+    logger.info(f'Received event: id={event.id}, type={event.type}')
+    return HttpResponse('ok', status=200)
