@@ -167,6 +167,7 @@ def dashboard_page(request, date):
 
     if subscription.exists():
         membership = subscription.first().membership
+        status = subscription.first().status
     else:
         membership = None
 
@@ -195,6 +196,7 @@ def dashboard_page(request, date):
 
     context = {
         "membership": membership,
+        "status": status,
         "today": today,
         "yesterday": yesterday,
         "tomorrow": tomorrow,
@@ -507,15 +509,10 @@ def coinbase_webhook(request):
         # List of all Coinbase webhook events:
         # https://commerce.coinbase.com/docs/api/#webhooks
 
-        if event['type'] == 'charge:confirmed':
-            logger.info('Payment confirmed.')
-            
-            customer_username = event['data']['metadata']['customer_username']
-            #customer_username = "sam@execbjj.com"
-            #customer_email = event['data']['customer_email']
+        if event['type'] == 'charge:pending':
+            logger.info('Payment pending.')
 
-            print("event is", event['data'])
-            #print("customer_email is", customer_email)
+            customer_username = event['data']['metadata']['customer_username']
 
             membership = Membership.objects.get(
                 slug='annual')
@@ -523,14 +520,54 @@ def coinbase_webhook(request):
             user = CustomUser.objects.get(
                 email=customer_username)
 
-            subscription, created = Subscription.objects.update_or_create(user=user, defaults={'status': "active", 'membership': membership, 'stripe_subscription_id': "coinbase"})
+            subscription, created = Subscription.objects.update_or_create(user=user, defaults={
+                                                                          'status': "pending", 'membership': membership, 'stripe_subscription_id': "coinbase"})
             subscription.save()
-            messages.success(request, "Thank for you subscribing!")
 
-            return redirect('dashboard_redirect')
-            # TODO: run some custom code here
-            # you can also use 'customer_id' or 'customer_username'
-            # to fetch an actual Django user
+        if event['type'] == 'charge:confirmed':
+            logger.info('Payment confirmed.')
+
+            customer_username = event['data']['metadata']['customer_username']
+
+            membership = Membership.objects.get(
+                slug='annual')
+
+            user = CustomUser.objects.get(
+                email=customer_username)
+
+            subscription = Subscription.objects.get(user=user)
+            subscription.status = "bitcoin"
+            subscription.stripe_subscription_id = "coinbase"
+            subscription.membership = membership
+            subscription.save()
+
+        if event['type'] == 'charge:failed':
+            logger.info('Payment failed.')
+
+            customer_username = event['data']['metadata']['customer_username']
+
+            membership = Membership.objects.get(
+                slug='annual')
+
+            user = CustomUser.objects.get(
+                email=customer_username)
+
+            subscription = Subscription.objects.get(user=user)
+            subscription.delete()
+
+            # SendGrid configuration
+            message = Mail(
+                from_email='sam@execbjj.com',
+                to_emails=customer_username,
+                subject='Payment failed',
+                plain_text_content='Your blockchain payment failed. Please contact us to resolve this issue.')
+            try:
+                # Initialises Sendgrid Client
+                sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
+                response = sg.send(message)
+                return HttpResponse(response, status=200)
+            except Exception as e:
+                return HttpResponse(e, status=400)
 
     except (SignatureVerificationError, WebhookInvalidPayload) as e:
         return HttpResponse(e, status=400)
