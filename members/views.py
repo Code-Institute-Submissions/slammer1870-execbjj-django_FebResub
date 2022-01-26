@@ -509,7 +509,7 @@ def coinbase_webhook(request):
         # List of all Coinbase webhook events:
         # https://commerce.coinbase.com/docs/api/#webhooks
 
-        if event['type'] == 'charge:pending':
+        if event['type'] == 'charge:created':
             logger.info('Payment pending.')
 
             customer_username = event['data']['metadata']['customer_username']
