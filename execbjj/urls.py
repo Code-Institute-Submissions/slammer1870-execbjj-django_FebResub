@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls.conf import include
 
+from .views import terms_and_conditions, privacy_policy
 
 from members.views import index_page, dashboard_page, register, webhook, newsletter, beginners_course, beginners_success, dashboard_redirect, flyer
 
@@ -46,5 +47,7 @@ urlpatterns = [
     #path('beginners-course/success/', beginners_success, name="beginners_success"),
     path('flyer/', flyer, name='flyer'),
     path('videos/', include('video.urls')),
+    path('terms-and-conditions/', terms_and_conditions, name="terms_and_conditions"),
+    path('privacy-policy/', privacy_policy, name="privacy_policy"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
