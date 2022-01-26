@@ -170,6 +170,7 @@ def dashboard_page(request, date):
         status = subscription.first().status
     else:
         membership = None
+        status = None
 
     today = datetime.strptime(date, "%Y-%m-%d")
 
