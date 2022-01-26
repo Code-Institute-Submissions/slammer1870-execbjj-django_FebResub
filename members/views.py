@@ -510,8 +510,8 @@ def coinbase_webhook(request):
         if event['type'] == 'charge:confirmed':
             logger.info('Payment confirmed.')
             
-            #customer_username = event['data']['metadata']['customer_username']
-            customer_username = "sam@execbjj.com"
+            customer_username = event['data']['metadata']['customer_username']
+            #customer_email = "sam@execbjj.com"
             #customer_email = event['data']['customer_email']
 
             print("event is", event['data'])
@@ -524,6 +524,10 @@ def coinbase_webhook(request):
                 email=customer_username)
 
             subscription, created = Subscription.objects.get_or_create(user=user, defaults={'status': "active", 'membership': membership, 'stripe_subscription_id': "coinbase"})
+            if not created:
+                subscription.status = "active"
+                subscription.stripe_subscription_id = "coinbase"
+                subscription.membership = membership
             subscription.save()
             messages.success(request, "Thank for you subscribing!")
 
