@@ -523,11 +523,7 @@ def coinbase_webhook(request):
             user = CustomUser.objects.get(
                 email=customer_username)
 
-            subscription, created = Subscription.objects.get_or_create(user=user, defaults={'status': "active", 'membership': membership, 'stripe_subscription_id': "coinbase"})
-            if not created:
-                subscription.status = "active"
-                subscription.stripe_subscription_id = "coinbase"
-                subscription.membership = membership
+            subscription, created = Subscription.objects.update_or_create(user=user, defaults={'status': "active", 'membership': membership, 'stripe_subscription_id': "coinbase"})
             subscription.save()
             messages.success(request, "Thank for you subscribing!")
 
