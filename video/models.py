@@ -39,6 +39,10 @@ class Video(models.Model):
     def thumbnail(self):
         parsed = urlparse(self.url)
 
+        if parsed.netloc == 'www.youtube.com':
+            return 'https://img.youtube.com/vi/{}/hqdefault.jpg'.format(
+                parsed.query.split('v=')[1])
+
         id = parsed.path.split('/')[-1]
 
         endpoint = "https://vimeo.com/api/v2/video/{}.json".format(id)
