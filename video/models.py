@@ -41,7 +41,7 @@ class Video(models.Model):
 
         if parsed.netloc == 'www.youtube.com':
             return 'https://img.youtube.com/vi/{}/hqdefault.jpg'.format(
-                parsed.query.split('v=')[1])
+                parsed.query.split('/')[-1])
 
         id = parsed.path.split('/')[-1]
 
