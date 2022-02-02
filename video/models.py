@@ -41,6 +41,9 @@ class Video(models.Model):
 
         id = parsed.path.split('/')[-1]
 
+        if parsed.netloc == 'www.youtube.com':
+            return 'https://img.youtube.com/vi/{}/maxresdefault.jpg'.format(id)
+
         endpoint = "https://vimeo.com/api/v2/video/{}.json".format(id)
 
         res = requests.get(endpoint)

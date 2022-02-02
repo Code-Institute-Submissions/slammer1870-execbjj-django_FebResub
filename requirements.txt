@@ -3,7 +3,6 @@ argon2-cffi==21.3.0
 argon2-cffi-bindings==21.2.0
 asgiref==3.4.1
 astroid==2.9.0
-
 attrs==21.4.0
 autopep8==1.6.0
 backcall==0.2.0
@@ -15,6 +14,7 @@ cffi==1.15.0
 cGraph==0.1
 charset-normalizer==2.0.7
 click==8.0.3
+coinbase-commerce==1.0.1
 crispy-tailwind==0.5.0
 cycler==0.11.0
 debugpy==1.5.1
@@ -33,10 +33,6 @@ graphviz==0.19.1
 gunicorn==20.1.0
 idna==3.2
 importlib-resources==5.4.0
-ipykernel==6.6.0
-ipython==7.30.1
-ipython-genutils==0.2.0
-ipywidgets==7.6.5
 isort==5.10.1
 jedi==0.18.1
 Jinja2==3.0.3
@@ -68,7 +64,6 @@ pandocfilters==1.5.0
 parso==0.8.3
 pexpect==4.8.0
 pickleshare==0.7.5
-Pillow==8.4.0
 platformdirs==2.4.0
 prometheus-client==0.12.0
 prompt-toolkit==3.0.24
