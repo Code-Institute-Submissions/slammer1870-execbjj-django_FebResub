@@ -10,21 +10,10 @@
       content="ExecBJJ Studio - Learn Brazilian Jiu Jitsu"
     />
     <link rel="shortcut icon" href="{% static 'favicon.png' %}" />
-    <!--Alpine JS Include-->
-    <script defer src="https://unpkg.com/alpinejs@3.8.1/dist/cdn.min.js"></script>
     <!--Tailwind CSS Link-->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            spacing: {
-              '128': '32rem',
-            }
-          }
-        }
-      }
-    </script>
+    <link rel="stylesheet" href="{% static 'css/style.min.css' %}" />
+    <!--Alpine JS Include-->
+    <script type="text/javascript" src="{% static 'js/alpine@3.2.1.js' %}" defer></script>
     <!--Plausible Analytics Tag-->
     <script
       defer
