@@ -74,7 +74,7 @@
           <div class="max-w-screen-sm mx-auto">
             <h5 class="text-2xl mb-4">
               <span class="capitalize">{{video.category}}</span>
-              <span class="capitalize"> {{video.section.name}} </span> -
+              -
               <span class="capitalize"> {{video.difficulty.name}} </span>
             </h5>
             <p>{{video.description}}</p>
@@ -89,9 +89,16 @@
               py-6
               flex
               items-center
-              {% if related == video %}
+              {%
+              if
+              related
+              ==
+              video
+              %}
               bg-gray-100
-              {% endif %}
+              {%
+              endif
+              %}
             "
           >
             <img
