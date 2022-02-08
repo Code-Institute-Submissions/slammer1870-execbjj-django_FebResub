@@ -10,13 +10,11 @@ class Schedule(models.Model):
     def __str__(self):
         return str(self.date)
 
-
-CLASS_CHOICES = (("Gi Class", "GI"), ("NoGi Class", "NOGI"))
-
+CLASS_CHOICES = (("Gi Class (Beginners)", "GI"), ("NoGi Class (Beginners)","NOGI"), ("Gi Class (Mixed Levels)", "GIMIX"), ("NoGi Class (Mixed Levels)","NOGIMIX"), ("Open Mat","OPEN"), ("Sparring Class","SPARRING"), ("Wrestling","WRESTLING"))
 
 class Lesson(models.Model):
     time = models.DateTimeField(unique=True)
-    class_type = models.CharField(choices=CLASS_CHOICES, max_length=12)
+    class_type = models.CharField(choices=CLASS_CHOICES, max_length=50)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
 
     @property
